@@ -10,6 +10,14 @@ class Usuario(UserMixin, db.Model):
     senha = db.Column(db.String(100), nullable=False)
     perfil = db.Column(db.String(100), nullable=False)
 
+class Produto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    codigo = db.Column(db.String(100), nullable=False, unique=True)
+    categoria = db.Column(db.String(100), nullable=False)
+    preco = db.Column(db.Float, nullable=False)
+    quantidade = db.Column(db.Integer, nullable=False)
+
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))

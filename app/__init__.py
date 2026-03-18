@@ -23,4 +23,10 @@ def create_app():
     from app.routes.auth import auth
     application.register_blueprint(auth)
 
+    from app.routes.loja import loja
+    application.register_blueprint(loja)
+
+    from app.routes.admin import admin
+    application.register_blueprint(admin)
+
     return application

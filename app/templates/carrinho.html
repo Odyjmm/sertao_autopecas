@@ -24,12 +24,15 @@
         {% endfor %}
 
         <h2>Total Geral: R$ {{ total | moeda }}</h2>
+
+        <form action="/pedido/finalizar" method="POST">
+        <button type="submit">Finalizar compra</button>
+        </form>
     {% else %}
         <p>Seu carrinho está vazio.</p>
     {% endif %}
 
     <br>
     <a href="/loja">Voltar para a loja</a>
-
 </body>
 </html>

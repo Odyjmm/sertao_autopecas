@@ -1,6 +1,6 @@
-from app import db
+from app import db, login_manager
 from flask_login import UserMixin
-from app import login_manager
+from datetime import datetime
 
 
 class Usuario(UserMixin, db.Model):
@@ -17,6 +17,20 @@ class Produto(db.Model):
     categoria = db.Column(db.String(100), nullable=False)
     preco = db.Column(db.Float, nullable=False)
     quantidade = db.Column(db.Integer, nullable=False)
+
+class Pedido(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    numero = db.Column(db.String, nullable=False, unique=True)
+    data = db.Column(db.DateTime, default=datetime.now)
+    status = db.Column(db.String, nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+
+class ItemPedido(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'), nullable=False)
+    produto_id = db.Column(db.Integer, db.ForeignKey('produto.id'), nullable=False)
+    quantidade = db.Column(db.Integer, nullable=False)
+    preco_unitario = db.Column(db.Float, nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -5,7 +5,6 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 login_manager = LoginManager()
 
-
 def create_app():
     application = Flask(__name__)
 
@@ -15,6 +14,7 @@ def create_app():
 
     db.init_app(application)
     login_manager.init_app(application)
+    login_manager.login_view = 'auth.login'
 
     from app import models
 

@@ -1,9 +1,11 @@
 from flask import Blueprint, session, redirect, request, render_template
+from flask_login import login_required
 from app.models import Produto
 
 carrinho = Blueprint('carrinho', __name__)
 
 @carrinho.route('/carrinho')
+@login_required
 def ver_carrinho():
     cart = session.get('carrinho', {})
     itens = []
@@ -27,6 +29,7 @@ def ver_carrinho():
     )
 
 @carrinho.route('/carrinho/adicionar', methods=['POST'])
+@login_required
 def adicionar_ao_carrinho():
     produto_id = request.form.get('produto_id', type=int)
 
@@ -46,6 +49,7 @@ def adicionar_ao_carrinho():
     return redirect('/loja')
 
 @carrinho.route('/carrinho/remover', methods=['POST'])
+@login_required
 def remover_carrinho():
     produto_id = request.form.get('produto_id', type=int)
 

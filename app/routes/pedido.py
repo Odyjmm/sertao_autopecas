@@ -1,5 +1,5 @@
 from flask import Blueprint, session, redirect, render_template
-from flask_login import current_user
+from flask_login import current_user, login_required
 from app.models import Produto, Pedido, ItemPedido
 from app import db
 import uuid
@@ -8,6 +8,7 @@ import uuid
 pedido = Blueprint('pedido', __name__)
 
 @pedido.route('/pedido/finalizar', methods=['POST'])
+@login_required
 def finalizar_compra():
     cart = session.get('carrinho', {})
 
@@ -50,6 +51,7 @@ def finalizar_compra():
     return redirect(f'/pedido/confirmacao/{numero}')
 
 @pedido.route('/pedido/confirmacao/<numero>')
+@login_required
 def confirmacao(numero):
     p = Pedido.query.filter_by(numero=numero).first_or_404()
     return render_template('pedido/confirmacao.html', pedido=p)

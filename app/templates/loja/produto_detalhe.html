@@ -10,7 +10,11 @@
     <p>Categoria: {{ produto.categoria }}</p>
     <p>Preço: R$ {{ produto.preco }}</p>
     <p>Quantidade disponível: {{ produto.quantidade }}</p>
-    <a href="/loja">Voltar ao catálogo</a>
+    {% if current_user.perfil == 'ADMIN' %}
+        <a href="/admin">Voltar ao painel</a>
+    {% else %}
+        <a href="/loja">Voltar ao catálogo</a>
+    {% endif %}
 
     <form action="/carrinho/adicionar" method="POST">
     <input type="hidden" name="produto_id" value="{{ produto.id }}">

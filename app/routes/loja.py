@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_login import current_user
 from app.models import Produto
 
 loja = Blueprint('loja', __name__)
@@ -12,4 +13,4 @@ def loja_home():
 def produto_detalhe(id):
     produto = Produto.query.get_or_404(id)
 
-    return render_template('loja/produto_detalhe.html', produto=produto)
+    return render_template('loja/produto_detalhe.html', produto=produto, current_user=current_user)

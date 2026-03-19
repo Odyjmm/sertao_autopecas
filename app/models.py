@@ -2,7 +2,6 @@ from app import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
 
-
 class Usuario(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventário</title>
+</head>
+<body>
+{% for produto in produtos %}
+    <p>{{ produto.nome }}</p>
+    <p>Código: {{ produto.codigo }}</p>
+    <p>Preço: R$ {{ produto.preco | moeda }}</p>
+
+    {% if produto.quantidade > 0 %}
+        <p>Quantidade: {{ produto.quantidade }}</p>
+    {% else %}
+        <p style="color: red;">Sem estoque</p>
+    {% endif %}
+
+    <a href="/produto/{{ produto.id }}">Ver detalhes</a>
+    <hr>
+{% endfor %}
+</body>
+</html>

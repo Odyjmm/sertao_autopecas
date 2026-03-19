@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template
+from app.models import Produto
 
 loja = Blueprint('loja', __name__)
 
 @loja.route('/loja')
 def loja_home():
-    return "<h1>Bem vindo à loja!</h1>"
+    produtos = Produto.query.filter(Produto.quantidade > 0).all()
+    return render_template('loja/catalogo.html', produtos=produtos)

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Peças</title>
+</head>
+<body>
+    {% for produto in produtos %}
+        <p>{{ produto.nome }}</p>
+        <p>Código: {{ produto.codigo }}</p>
+        <p>Categoria: {{ produto.categoria }}</p>
+        <p>Preço: R$ {{ produto.preco }}</p>
+        <p>Quantidade: {{ produto.quantidade }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>

@@ -5,13 +5,18 @@
     <title>Catálogo de Peças</title>
 </head>
 <body>
-    {% for produto in produtos %}
-        <p>{{ produto.nome }}</p>
-        <p>Código: {{ produto.codigo }}</p>
-        <p>Categoria: {{ produto.categoria }}</p>
-        <p>Preço: R$ {{ produto.preco }}</p>
-        <p>Quantidade: {{ produto.quantidade }}</p>
-        <hr>
-    {% endfor %}
+{% for produto in produtos %}
+    <p>{{ produto.nome }}</p>
+    <p>Preço: R$ {{ produto.preco }}</p>
+
+    {% if produto.quantidade > 0 %}
+        <p>Em estoque ({{ produto.quantidade }} unidades)</p>
+    {% else %}
+        <p>Indisponível</p>
+    {% endif %}
+
+    <a href="/produto/{{ produto.id }}">Ver detalhes</a>
+    <hr>
+{% endfor %}
 </body>
 </html>

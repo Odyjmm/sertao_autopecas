@@ -53,6 +53,14 @@ with app.app_context():
         quantidade=1
     )
 
+    produto5 = Produto(
+        nome='Chave de fenda',
+        codigo='FMT-001',
+        categoria='Ferramentas',
+        preco=2.00,
+        quantidade=0
+    )
+
     if not Usuario.query.filter_by(email='a@a.com').first():
         db.session.add(admin)
 
@@ -69,6 +77,9 @@ with app.app_context():
 
     if not Produto.query.filter_by(codigo='MT-001').first():
         db.session.add(produto4)
+
+    if not Produto.query.filter_by(codigo='FMT-001').first():
+        db.session.add(produto5)
 
     db.session.commit()
     print('Seed concluído com sucesso!')

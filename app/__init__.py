@@ -11,6 +11,7 @@ def create_app():
 
     application.config['SECRET_KEY'] = 'sertao-secret-key'
     application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+    application.config['SESSION_PERMANENT'] = False
 
     db.init_app(application)
     login_manager.init_app(application)
@@ -28,5 +29,12 @@ def create_app():
 
     from app.routes.admin import admin
     application.register_blueprint(admin)
+
+    from app.routes.carrinho import carrinho
+    application.register_blueprint(carrinho)
+
+    @application.template_filter('moeda')
+    def moeda_filter(value):
+        return f'{value:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
 
     return application

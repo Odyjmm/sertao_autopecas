@@ -7,3 +7,9 @@ loja = Blueprint('loja', __name__)
 def loja_home():
     produtos = Produto.query.filter(Produto.quantidade > 0).all()
     return render_template('loja/catalogo.html', produtos=produtos)
+
+@loja.route('/produto/<int:id>')
+def produto_detalhe(id):
+    produto = Produto.query.get_or_404(id)
+
+    return render_template('loja/produto_detalhe.html', produto=produto)

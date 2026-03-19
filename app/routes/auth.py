@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from flask_login import login_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
@@ -19,6 +19,7 @@ def login():
             if check_password_hash(usuario.senha, senha):
 
                 login_user(usuario)
+                session.pop('carrinho', None)
 
                 if usuario.perfil == "ADMIN":
                     return redirect('/admin')
@@ -34,6 +35,9 @@ def cadastro():
         nome = request.form.get("nome")
         email = request.form.get("email")
         senha = request.form.get("senha")
+
+        if Usuario.query.filter_by(email=email).first():
+            return render_template('cadastro.html', erro='Email já cadastrado!')
 
         novo_usuario = Usuario(
             nome=nome,

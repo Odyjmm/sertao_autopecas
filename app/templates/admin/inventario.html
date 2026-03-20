@@ -5,6 +5,14 @@
     <title>Inventário</title>
 </head>
 <body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <p style="color: red;">{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+<a href="/admin/produto/novo">Adicionar novo produto</a>
+
 {% for produto in produtos %}
     <p>{{ produto.nome }}</p>
     <p>Código: {{ produto.codigo }}</p>
@@ -17,6 +25,11 @@
     {% endif %}
 
     <a href="/produto/{{ produto.id }}">Ver detalhes</a>
+
+    <form action="/admin/produto/remover" method="POST">
+        <input type="hidden" name="produto_id" value="{{ produto.id }}">
+        <button type="submit" onclick="return confirm('Tem certeza que deseja remover este produto?')">Remover</button>
+    </form>
     <hr>
 {% endfor %}
 </body>

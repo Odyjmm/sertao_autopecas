@@ -58,3 +58,24 @@ def remover_produto():
     db.session.commit()
 
     return redirect('/admin')
+
+
+@admin.route("/admin/produto/editar/<int:id>", methods=["GET", "POST"])
+@login_required
+def editar_produto(id):
+    if current_user.perfil != 'ADMIN':
+        return redirect('/loja')
+
+    produto = Produto.query.get_or_404(id)
+
+    if request.method == 'POST':
+        produto.nome = request.form.get("nome")
+        produto.codigo = request.form.get("codigo")
+        produto.categoria = request.form.get("categoria")
+        produto.preco = float(request.form.get("preco"))
+        produto.quantidade = int(request.form.get("quantidade"))
+
+        db.session.commit()
+        return redirect("/admin")
+
+    return render_template("admin/editar_produto.html", produto=produto)

@@ -26,6 +26,8 @@
 
     <a href="/produto/{{ produto.id }}">Ver detalhes</a>
 
+    <a href="/admin/produto/editar/{{ produto.id }}">Editar</a>
+
     <form action="/admin/produto/remover" method="POST">
         <input type="hidden" name="produto_id" value="{{ produto.id }}">
         <button type="submit" onclick="return confirm('Tem certeza que deseja remover este produto?')">Remover</button>

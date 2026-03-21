@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
 
@@ -18,6 +18,8 @@ def login():
         if usuario:
             if check_password_hash(usuario.senha, senha):
 
+                logout_user()
+                session.clear()
                 login_user(usuario)
                 session.pop('carrinho', None)
 
@@ -51,3 +53,10 @@ def cadastro():
 
         return redirect('/login')
     return render_template('cadastro.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    session.pop('carrinho', None)
+    logout_user()
+    return redirect('/login')

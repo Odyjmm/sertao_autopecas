@@ -12,6 +12,7 @@
 {% endwith %}
 
 <a href="/admin/produto/novo">Adicionar novo produto</a>
+<a href="/admin/pedidos">Ver pedidos</a>
 
 {% for produto in produtos %}
     <p>{{ produto.nome }}</p>
@@ -34,5 +35,6 @@
     </form>
     <hr>
 {% endfor %}
+    <a href="/logout">Sair</a>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <body>
 {% for produto in produtos %}
     <p>{{ produto.nome }}</p>
-    <p>Preço: R$ {{ produto.preco }}</p>
+    <p>Preço: R$ {{ produto.preco | moeda }}</p>
 
     {% if produto.quantidade > 0 %}
         <p>Em estoque ({{ produto.quantidade }} unidades)</p>
@@ -17,6 +17,7 @@
 
     <a href="/produto/{{ produto.id }}">Ver detalhes</a>
     <hr>
-{% endfor %}
+    {% endfor %}
+    <a href="/logout">Sair</a>
 </body>
 </html>

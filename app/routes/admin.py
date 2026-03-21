@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, flash
 from flask_login import login_required, current_user
-from app.models import Produto
+from app.models import Produto, Pedido
 from app import db
 
 admin = Blueprint('admin', __name__)
@@ -59,7 +59,6 @@ def remover_produto():
 
     return redirect('/admin')
 
-
 @admin.route("/admin/produto/editar/<int:id>", methods=["GET", "POST"])
 @login_required
 def editar_produto(id):
@@ -79,3 +78,13 @@ def editar_produto(id):
         return redirect("/admin")
 
     return render_template("admin/editar_produto.html", produto=produto)
+
+@admin.route("/admin/pedidos", methods=["GET"])
+@login_required
+def listar_pedidos():
+    if current_user.perfil != 'ADMIN':
+        return redirect('/loja')
+
+    pedidos = Pedido.query.order_by(Pedido.data.desc()).all()
+
+    return render_template('admin/pedidos.html', pedidos=pedidos)

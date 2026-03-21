@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventário</title>
+</head>
+<body>
+<a href="/admin">Voltar ao painel</a>
+
+{% for pedido in pedidos %}
+    <p>Número: {{ pedido.numero }}</p>
+    <p>Data: {{ pedido.data }}</p>
+    <p>Status: {{ pedido.status }}</p>
+    <p>ID do Cliente: {{ pedido.usuario_id }}</p>
+{% endfor %}
+</body>
+    <a href="/logout">Sair</a>
+</html>

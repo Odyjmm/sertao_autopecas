@@ -5,6 +5,12 @@
     <title>Catálogo de Peças</title>
 </head>
 <body>
+
+<form action="/busca" method="GET">
+    <input type="text" name="q" placeholder="Buscar produto...">
+    <button type="submit">Buscar</button>
+</form>
+
 {% for produto in produtos %}
     <p>{{ produto.nome }}</p>
     <p>Preço: R$ {{ produto.preco | moeda }}</p>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Busca</title>
+</head>
+<body>
+
+<h2>Resultado da busca</h2>
+<p>Você buscou por: <strong>{{ termo }}</strong></p>
+<hr>
+
+{% if produtos and produtos|length > 0 %}
+
+    {% for produto in produtos %}
+        <p>{{ produto.nome }}</p>
+        <p>Preço: R$ {{ produto.preco | moeda }}</p>
+
+        {% if produto.quantidade > 0 %}
+            <p>Em estoque ({{ produto.quantidade }} unidades)</p>
+        {% else %}
+            <p>Indisponível</p>
+        {% endif %}
+
+        <a href="/produto/{{ produto.id }}">Ver detalhes</a>
+        <hr>
+    {% endfor %}
+
+{% else %}
+
+    <p>Nenhum produto encontrado para "{{ termo }}".</p>
+    <p>Tente outro nome ou código.</p>
+
+{% endif %}
+
+<a href="/loja">Voltar ao catálogo</a>
+<br>
+<a href="/logout">Sair</a>
+
+</body>
+</html>

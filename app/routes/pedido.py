@@ -54,7 +54,7 @@ def finalizar_compra():
 @login_required
 def confirmacao(numero):
     p = Pedido.query.filter_by(numero=numero).first_or_404()
-    return render_template('pedido/confirmacao.html', pedido=p)
+    return render_template('pedido/confirmacao.html', pedido=p, current_user=current_user)
 
 @pedido.route('/meus-pedidos', methods=['GET'])
 @login_required

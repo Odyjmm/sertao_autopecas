@@ -8,6 +8,10 @@ class Usuario(UserMixin, db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     senha = db.Column(db.String(100), nullable=False)
     perfil = db.Column(db.String(100), nullable=False)
+    endereco = db.Column(db.String(200), nullable=True)
+    cidade = db.Column(db.String(100), nullable=True)
+    estado = db.Column(db.String(2), nullable=True)
+    cep = db.Column(db.String(9), nullable=True)
 
 class Produto(db.Model):
     id = db.Column(db.Integer, primary_key=True)

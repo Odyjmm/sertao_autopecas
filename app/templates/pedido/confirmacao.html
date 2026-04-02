@@ -12,6 +12,11 @@
     <p><strong>Data:</strong> {{ pedido.data }}</p>
     <p><strong>Status:</strong> {{ pedido.status }}</p>
 
+    <h2>Endereço de entrega</h2>
+    <p>{{ current_user.endereco }}</p>
+    <p>{{ current_user.cidade }} - {{ current_user.estado }}</p>
+    <p>CEP: {{ current_user.cep }}</p>
+
     <br>
     <a href="/loja">Voltar para a loja</a>
     <a href="/logout">Sair</a>

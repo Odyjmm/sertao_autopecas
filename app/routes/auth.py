@@ -37,6 +37,10 @@ def cadastro():
         nome = request.form.get("nome")
         email = request.form.get("email")
         senha = request.form.get("senha")
+        endereco = request.form.get("endereco")
+        cidade = request.form.get("cidade")
+        estado = request.form.get("estado")
+        cep = request.form.get("cep")
 
         if Usuario.query.filter_by(email=email).first():
             return render_template('cadastro.html', erro='Email já cadastrado!')
@@ -45,7 +49,11 @@ def cadastro():
             nome=nome,
             email=email,
             senha=generate_password_hash(senha),
-            perfil='CLIENTE'
+            perfil='CLIENTE',
+            endereco=endereco,
+            cidade=cidade,
+            estado=estado,
+            cep=cep
         )
 
         db.session.add(novo_usuario)
@@ -60,3 +68,7 @@ def logout():
     session.pop('carrinho', None)
     logout_user()
     return redirect('/login')
+
+@auth.route('/termos')
+def termos():
+    return render_template('termos.html')

@@ -17,7 +17,11 @@ with app.app_context():
         nome='Cliente',
         email='c@c.com',
         senha=generate_password_hash('123456'),
-        perfil='CLIENTE'
+        perfil='CLIENTE',
+        endereco='Rua das Peças, 123',
+        cidade='Campina Grande',
+        estado='PB',
+        cep='58100-000'
     )
 
     #Produtos
@@ -66,6 +70,7 @@ with app.app_context():
 
     if not Usuario.query.filter_by(email='c@c.com').first():
         db.session.add(cliente)
+
     if not Produto.query.filter_by(codigo='FT-001').first():
         db.session.add(produto1)
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitar Devolução</title>
+</head>
+<body>
+    <h1>Solicitar Devolução</h1>
+    <p>Pedido: {{ pedido.numero }}</p>
+
+    <form method="POST">
+        <label>Motivo:</label><br>
+        <select name="motivo">
+            {% for motivo in motivos %}
+                <option value="{{ motivo }}">{{ motivo }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Confirmar devolução</button>
+    </form>
+
+    <a href="/meus-pedidos">Voltar</a>
+</body>
+</html>

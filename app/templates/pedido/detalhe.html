@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedido {{ pedido.numero }}</title>
+</head>
+<body>
+    <h1>Pedido {{ pedido.numero }}</h1>
+
+    <p>Status: {{ pedido.status }}</p>
+
+    <h2>Itens</h2>
+    <ul>
+    {% for item in itens %}
+    <li>
+        {{ item.nome }} -
+        Quantidade: {{ item.quantidade }} -
+        Preço: R$ {{ item.preco_unitario | moeda }}
+    </li>
+    {% endfor %}
+    </ul>
+
+    <a href="/loja">Voltar ao catálogo</a>
+    <a href="/logout">Sair</a>
+</body>
+</html>

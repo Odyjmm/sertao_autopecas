@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Pedidos</title>
+</head>
+<body>
+    <a href="/loja">Voltar à loja</a>
+
+    {% if pedidos %}
+        {% for pedido in pedidos %}
+            <p>Número: {{ pedido.numero }}</p>
+            <p>Data: {{ pedido.data }}</p>
+            <p>Status: {{ pedido.status }}</p>
+            <a href="/meus-pedidos/{{ pedido.numero }}">Ver detalhes</a>
+            <a href="/devolucao/{{ pedido.numero }}">Solicitar devolução</a>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>Você ainda não fez nenhum pedido.</p>
+    {% endif %}
+
+    <a href="/logout">Sair</a>
+</body>
+</html>

@@ -31,6 +31,14 @@ class ItemPedido(db.Model):
     quantidade = db.Column(db.Integer, nullable=False)
     preco_unitario = db.Column(db.Float, nullable=False)
 
+class Devolucao(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    protocolo = db.Column(db.String, nullable=False)
+    pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'), nullable=False)
+    motivo = db.Column(db.String, nullable=False)
+    status = db.Column(db.String, nullable=False)
+    data = db.Column(db.DateTime, default=datetime.now)
+
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))

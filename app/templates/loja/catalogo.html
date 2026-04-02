@@ -6,12 +6,24 @@
 </head>
 <body>
 
+<div>
+    {% if current_user.is_authenticated %}
+        <p>Olá, {{ current_user.nome }}!</p>
+        <a href="/meus-pedidos">Meus Pedidos</a>
+        <a href="/carrinho">Carrinho</a>
+        <a href="/logout">Sair</a>
+    {% else %}
+        <a href="/login">Login</a>
+        <a href="/cadastro">Cadastre-se</a>
+    {% endif %}
+</div>
+
 <form action="/busca" method="GET">
     <input type="text" name="q" placeholder="Buscar produto...">
     <button type="submit">Buscar</button>
 </form>
 
-{% for produto in produtos %}
+    {% for produto in produtos %}
     <p>{{ produto.nome }}</p>
     <p>Preço: R$ {{ produto.preco | moeda }}</p>
 
@@ -24,6 +36,5 @@
     <a href="/produto/{{ produto.id }}">Ver detalhes</a>
     <hr>
     {% endfor %}
-    <a href="/logout">Sair</a>
 </body>
 </html>

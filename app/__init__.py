@@ -36,6 +36,9 @@ def create_app():
     from app.routes.pedido import pedido
     application.register_blueprint(pedido)
 
+    from app.routes.devolucao import devolucao
+    application.register_blueprint(devolucao)
+
     @application.template_filter('moeda')
     def moeda_filter(value):
         return f'{value:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')

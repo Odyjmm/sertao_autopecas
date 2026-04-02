@@ -55,3 +55,28 @@ def finalizar_compra():
 def confirmacao(numero):
     p = Pedido.query.filter_by(numero=numero).first_or_404()
     return render_template('pedido/confirmacao.html', pedido=p)
+
+@pedido.route('/meus-pedidos', methods=['GET'])
+@login_required
+def meus_pedidos():
+    pedidos = Pedido.query.filter_by(usuario_id=current_user.id).order_by(Pedido.data.desc()).all()
+    return render_template('pedido/meus_pedidos.html', pedidos=pedidos)
+
+@pedido.route('/meus-pedidos/<numero>', methods=['GET'])
+@login_required
+def detalhe_pedido(numero):
+    pedido_especifico = Pedido.query.filter_by(numero=numero).first_or_404()
+
+    itens = ItemPedido.query.filter_by(pedido_id=pedido_especifico.id).all()
+
+    itens_detalhados = []
+    for item in itens:
+        produto = Produto.query.get(item.produto_id)
+        itens_detalhados.append({
+            'nome': produto.nome,
+            'quantidade': item.quantidade,
+            'preco_unitario': item.preco_unitario,
+            'subtotal': item.quantidade * item.preco_unitario
+        })
+
+    return render_template('pedido/detalhe.html', pedido=pedido_especifico, itens=itens_detalhados)

@@ -13,8 +13,15 @@
 
 <a href="/admin/produto/novo">Adicionar novo produto</a>
 <a href="/admin/pedidos">Ver pedidos</a>
+<br><br>
 
 {% for produto in produtos %}
+    {% if produto.imagem %}
+        <img src="/static/uploads/{{ produto.imagem }}" width="200">
+    {% else %}
+        <p>Sem imagem</p>
+    {% endif %}
+
     <p>{{ produto.nome }}</p>
     <p>Código: {{ produto.codigo }}</p>
     <p>Preço: R$ {{ produto.preco | moeda }}</p>

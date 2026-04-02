@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, redirect, request, flash
+from flask import Blueprint, render_template, redirect, request, flash, current_app
 from flask_login import login_required, current_user
 from app.models import Produto, Pedido
 from app import db
+from werkzeug.utils import secure_filename
+import os
 
 admin = Blueprint('admin', __name__)
 
@@ -27,12 +29,20 @@ def novo_produto():
         preco = request.form.get('preco', type=float)
         quantidade = request.form.get('quantidade', type=int)
 
+        imagem = request.files.get('imagem')
+        nome_arquivo = None
+
+        if imagem and imagem.filename != '':
+            nome_arquivo = secure_filename(imagem.filename)
+            imagem.save(os.path.join(current_app.config['UPLOAD_FOLDER'], nome_arquivo))
+
         produto = Produto(
             nome=nome,
             codigo=codigo,
             categoria=categoria,
             preco=preco,
-            quantidade=quantidade
+            quantidade=quantidade,
+            imagem = nome_arquivo
         )
 
         db.session.add(produto)
@@ -73,6 +83,14 @@ def editar_produto(id):
         produto.categoria = request.form.get("categoria")
         produto.preco = float(request.form.get("preco"))
         produto.quantidade = int(request.form.get("quantidade"))
+
+        imagem = request.files.get('imagem')
+        nome_arquivo = None
+
+        if imagem and imagem.filename != '':
+            nome_arquivo = secure_filename(imagem.filename)
+            imagem.save(os.path.join(current_app.config['UPLOAD_FOLDER'], nome_arquivo))
+            produto.imagem = nome_arquivo
 
         db.session.commit()
         return redirect("/admin")

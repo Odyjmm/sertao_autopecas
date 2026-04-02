@@ -8,7 +8,7 @@
 
     <h1>Cadastrar Novo Produto</h1>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label>Nome:</label><br>
         <input type="text" name="nome" required><br><br>
 
@@ -23,6 +23,9 @@
 
         <label>Quantidade em estoque:</label><br>
         <input type="number" name="quantidade" required><br><br>
+
+        <label>Imagem do produto:</label><br>
+        <input type="file" name="imagem" accept="image/*"><br><br>
 
         <button type="submit">Adicionar Produto</button>
     </form>

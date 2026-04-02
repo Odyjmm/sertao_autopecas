@@ -30,7 +30,8 @@ with app.app_context():
         codigo='FT-001',
         categoria='Filtros',
         preco=29.90,
-        quantidade=50
+        quantidade=50,
+        imagem='filtro_oleo.jpg'
     )
 
     produto2 = Produto(
@@ -38,7 +39,9 @@ with app.app_context():
         codigo='FT-002',
         categoria='Filtros',
         preco=20.00,
-        quantidade=30
+        quantidade=30,
+        imagem='filtro_ar.jpg'
+
     )
 
     produto3 = Produto(
@@ -46,7 +49,8 @@ with app.app_context():
         codigo='FR-001',
         categoria='Freios',
         preco=180.00,
-        quantidade=3
+        quantidade=3,
+        imagem='sistema_freio.jpg'
     )
 
     produto4 = Produto(
@@ -54,7 +58,8 @@ with app.app_context():
         codigo='MT-001',
         categoria='Motores',
         preco=3200.00,
-        quantidade=1
+        quantidade=1,
+        imagem='motor_V8.jpg'
     )
 
     produto5 = Produto(
@@ -62,7 +67,8 @@ with app.app_context():
         codigo='FMT-001',
         categoria='Ferramentas',
         preco=2.00,
-        quantidade=0
+        quantidade=100,
+        imagem='chave_fenda.jpg'
     )
 
     if not Usuario.query.filter_by(email='a@a.com').first():

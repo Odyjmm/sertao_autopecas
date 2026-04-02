@@ -1,12 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 
 def create_app():
     application = Flask(__name__)
+
+    application.config['UPLOAD_FOLDER'] = os.path.join('app', 'static', 'uploads')
+    application.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
     application.config['SECRET_KEY'] = 'sertao-secret-key'
     application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'

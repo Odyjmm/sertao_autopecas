@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, request, flash, current_app
 from flask_login import login_required, current_user
-from app.models import Produto, Pedido
-from app import db
 from werkzeug.utils import secure_filename
+from app.models import Produto, Pedido, Devolucao
+from app import db
 import os
 
 admin = Blueprint('admin', __name__)
@@ -106,3 +106,32 @@ def listar_pedidos():
     pedidos = Pedido.query.order_by(Pedido.data.desc()).all()
 
     return render_template('admin/pedidos.html', pedidos=pedidos)
+
+
+@admin.route('/admin/devolucoes')
+@login_required
+def listar_devolucoes():
+    if current_user.perfil != 'ADMIN':
+        return redirect('/loja')
+
+    devolucoes = Devolucao.query.order_by(Devolucao.data.desc()).all()
+    return render_template('admin/devolucoes.html', devolucoes=devolucoes)
+
+
+@admin.route('/admin/devolucoes/<int:id>/<acao>', methods=['POST'])
+@login_required
+def gerenciar_devolucao(id, acao):
+    if current_user.perfil != 'ADMIN':
+        return redirect('/loja')
+
+    devolucao = Devolucao.query.get_or_404(id)
+
+    if acao == 'aprovar':
+        devolucao.status = 'APROVADA'
+        devolucao.pedido.status = 'DEVOLVIDO'
+    elif acao == 'rejeitar':
+        devolucao.status = 'RECUSADA'
+        devolucao.pedido.status = 'CONFIRMADO'
+
+    db.session.commit()
+    return redirect('/admin/devolucoes')

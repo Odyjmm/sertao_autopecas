@@ -1,25 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Meus Pedidos</title>
-</head>
-<body>
-    <a href="/loja">Voltar à loja</a>
+{% extends 'base.html' %}
 
-    {% if pedidos %}
-        {% for pedido in pedidos %}
-            <p>Número: {{ pedido.numero }}</p>
-            <p>Data: {{ pedido.data }}</p>
-            <p>Status: {{ pedido.status }}</p>
-            <a href="/meus-pedidos/{{ pedido.numero }}">Ver detalhes</a>
-            <a href="/devolucao/{{ pedido.numero }}">Solicitar devolução</a>
-            <hr>
-        {% endfor %}
-    {% else %}
-        <p>Você ainda não fez nenhum pedido.</p>
-    {% endif %}
+{% block titulo %}Meus Pedidos{% endblock %}
 
-    <a href="/logout">Sair</a>
-</body>
-</html>
+{% block conteudo %}
+<h2 style="text-align: center;">Meus Pedidos</h2>
+
+{% if pedidos %}
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="padding: 10px; border: 1px solid #ddd;">Número</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Data</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Status</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                    {{ pedido.numero }}
+                </td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                    {{ pedido.data.strftime('%d/%m/%Y %H:%M') }}
+                </td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                    {{ pedido.status }}
+                </td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+
+                    <a href="/meus-pedidos/{{ pedido.numero }}"
+                       class="btn btn-secondary"
+                       style="margin-right: 10px;">
+                        Ver detalhes
+                    </a>
+
+                    {% if pedido.devolucoes %}
+                        {% set devolucao = pedido.devolucoes[0] %}
+
+                        {% if devolucao.status == 'PENDENTE' %}
+                            <p style="color: orange; margin-top: 10px;">
+                                Devolução solicitada — aguardando análise
+                            </p>
+                        {% elif devolucao.status == 'APROVADA' %}
+                            <p style="color: green; margin-top: 10px;">
+                                Devolução aprovada
+                            </p>
+                        {% elif devolucao.status == 'RECUSADA' %}
+                            <p style="color: red; margin-top: 10px;">
+                                Devolução recusada
+                            </p>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="/devolucao/{{ pedido.numero }}"
+                           class="btn btn-primary"
+                           style="margin-top: 10px;">
+                            Solicitar devolução
+                        </a>
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p style="text-align: center;">Você ainda não fez nenhum pedido.</p>
+{% endif %}
+
+<br><br>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="/loja" class="btn btn-primary">Voltar para a loja</a>
+</div>
+
+{% endblock %}

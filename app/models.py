@@ -28,6 +28,8 @@ class Pedido(db.Model):
     data = db.Column(db.DateTime, default=datetime.now)
     status = db.Column(db.String, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+    usuario = db.relationship('Usuario', backref='pedidos')
+    itens = db.relationship('ItemPedido', backref='pedido')
 
 class ItemPedido(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +45,7 @@ class Devolucao(db.Model):
     motivo = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False)
     data = db.Column(db.DateTime, default=datetime.now)
+    pedido = db.relationship('Pedido', backref='devolucoes')
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -1,47 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Inventário</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block titulo %}Inventário{% endblock %}
+
+{% block conteudo %}
+
+<h2 style="text-align: center;">Painel Administrativo</h2>
+
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
-        <p style="color: red;">{{ message }}</p>
+        <div style="color: red; text-align: center; margin-top: 10px;">
+            {{ message }}
+        </div>
     {% endfor %}
 {% endwith %}
 
-<a href="/admin/produto/novo">Adicionar novo produto</a>
-<a href="/admin/pedidos">Ver pedidos</a>
-<br><br>
+<div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+    <a href="/admin/produto/novo" class="btn btn-primary">
+        + Novo Produto
+    </a>
+    <a href="/admin/pedidos" class="btn btn-secondary">
+        Ver pedidos
+    </a>
+</div>
 
-{% for produto in produtos %}
-    {% if produto.imagem %}
-        <img src="/static/uploads/{{ produto.imagem }}" width="200">
-    {% else %}
-        <p>Sem imagem</p>
-    {% endif %}
+<table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 10px; border: 1px solid #ddd;">Imagem</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Nome</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Código</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Preço</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Estoque</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
 
-    <p>{{ produto.nome }}</p>
-    <p>Código: {{ produto.codigo }}</p>
-    <p>Preço: R$ {{ produto.preco | moeda }}</p>
+    {% for produto in produtos %}
+        <tr
+            {% if produto.quantidade == 0 %}
+                style="background-color: #ffe5e5;"
+            {% elif produto.quantidade <= 5 %}
+                 style="background-color: #fff8e1;"
+            {% endif %}
+            >
 
-    {% if produto.quantidade > 0 %}
-        <p>Quantidade: {{ produto.quantidade }}</p>
-    {% else %}
-        <p style="color: red;">Sem estoque</p>
-    {% endif %}
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {% if produto.imagem %}
+                    <img src="/static/uploads/{{ produto.imagem }}"
+                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">
+                {% else %}
+                    <span>Sem imagem</span>
+                {% endif %}
+            </td>
 
-    <a href="/produto/{{ produto.id }}">Ver detalhes</a>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ produto.nome }}
+            </td>
 
-    <a href="/admin/produto/editar/{{ produto.id }}">Editar</a>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ produto.codigo }}
+            </td>
 
-    <form action="/admin/produto/remover" method="POST">
-        <input type="hidden" name="produto_id" value="{{ produto.id }}">
-        <button type="submit" onclick="return confirm('Tem certeza que deseja remover este produto?')">Remover</button>
-    </form>
-    <hr>
-{% endfor %}
-    <a href="/logout">Sair</a>
-</body>
-</html>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                R$ {{ produto.preco | moeda }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {% if produto.quantidade > 0 %}
+                    <span style="color: green;">
+                        {% if produto.quantidade == 0 %}
+                            <span style="color: red; font-weight: bold;">
+                                Sem estoque
+                            </span>
+                        {% elif produto.quantidade <= 5 %}
+                            <span style="color: orange; font-weight: bold;">
+                                {{ produto.quantidade }} (baixo)
+                            </span>
+                        {% else %}
+                            <span style="color: green;">
+                                {{ produto.quantidade }}
+                            </span>
+                        {% endif %}
+                    </span>
+                {% else %}
+                    <span style="color: red;">
+                        Sem estoque
+                    </span>
+                {% endif %}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+
+                <a href="/produto/{{ produto.id }}"
+                   class="btn btn-secondary"
+                   style="margin-bottom: 5px; display: inline-block;">
+                    Ver
+                </a>
+
+                <a href="/admin/produto/editar/{{ produto.id }}"
+                   class="btn btn-primary"
+                   style="margin-bottom: 5px; display: inline-block;">
+                    Editar
+                </a>
+
+                <form action="/admin/produto/remover" method="POST" style="display: inline;">
+                    <input type="hidden" name="produto_id" value="{{ produto.id }}">
+                    <button type="submit" class="btn btn-secondary"
+                            onclick="return confirm('Tem certeza que deseja remover este produto?')">
+                        Remover
+                    </button>
+                </form>
+
+            </td>
+
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}

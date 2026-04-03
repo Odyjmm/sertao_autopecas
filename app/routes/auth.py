@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
-
 from app.models import Usuario
 
 auth = Blueprint('auth', __name__)
@@ -35,7 +34,7 @@ def login():
 def cadastro():
     if request.method == 'POST':
         nome = request.form.get("nome")
-        email = request.form.get("email")
+        email = request.form.get("email").lower().strip()
         senha = request.form.get("senha")
         endereco = request.form.get("endereco")
         cidade = request.form.get("cidade")
@@ -44,6 +43,15 @@ def cadastro():
 
         if Usuario.query.filter_by(email=email).first():
             return render_template('cadastro.html', erro='Email já cadastrado!')
+
+        if senha != request.form.get("confirmar_senha"):
+            return render_template("cadastro.html", erro="As senhas não coincidem")
+
+        if not all([nome, email, senha, endereco, cidade, estado, cep]):
+            return render_template('cadastro.html', erro='Preencha todos os campos!')
+
+        if len(senha) < 6:
+            return render_template('cadastro.html', erro='A senha deve ter pelo menos 6 caracteres')
 
         novo_usuario = Usuario(
             nome=nome,

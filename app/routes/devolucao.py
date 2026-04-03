@@ -29,6 +29,9 @@ def solicitar_devolucao(numero_pedido):
         )
 
         db.session.add(nova_devolucao)
+
+        pedido.status = 'DEVOLUÇÃO SOLICITADA'
+
         db.session.commit()
 
         flash(f'Devolução registrada com sucesso. Protocolo: {protocolo}')

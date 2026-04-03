@@ -1,30 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ produto.nome }}</title>
-</head>
-<body>
-    {% if produto.imagem %}
-        <img src="/static/uploads/{{ produto.imagem }}" width="200">
-    {% else %}
-        <p>Sem imagem</p>
-    {% endif %}
-    <h1>{{ produto.nome }}</h1>
-    <p>Código: {{ produto.codigo }}</p>
-    <p>Categoria: {{ produto.categoria }}</p>
-    <p>Preço: R$ {{ produto.preco }}</p>
-    <p>Quantidade disponível: {{ produto.quantidade }}</p>
-    {% if current_user.perfil == 'ADMIN' %}
-        <a href="/admin">Voltar ao painel</a>
-    {% else %}
-        <a href="/loja">Voltar ao catálogo</a>
-    {% endif %}
+{% extends 'base.html' %}
 
-    <form action="/carrinho/adicionar" method="POST">
-    <input type="hidden" name="produto_id" value="{{ produto.id }}">
-    <button type="submit">Adicionar ao carrinho</button>
-    </form>
-    <a href="/logout">Sair</a>
-</body>
-</html>
+{% block titulo %}{{ produto.nome }}{% endblock %}
+
+{% block conteudo %}
+
+<div style="
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+">
+
+    <div style="text-align: center;">
+        {% if produto.imagem %}
+            <img src="/static/uploads/{{ produto.imagem }}"
+                 style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px;">
+        {% else %}
+            <p>Sem imagem</p>
+        {% endif %}
+    </div>
+
+    <div>
+
+        <h2 style="margin-bottom: 10px;">{{ produto.nome }}</h2>
+
+        <p><strong>Código:</strong> {{ produto.codigo }}</p>
+        <p><strong>Categoria:</strong> {{ produto.categoria }}</p>
+
+        <p style="font-size: 20px; margin: 15px 0;">
+            <strong>R$ {{ produto.preco | moeda }}</strong>
+        </p>
+
+        {% if produto.quantidade > 0 %}
+            <p style="color: green;">
+                Em estoque ({{ produto.quantidade }} disponíveis)
+            </p>
+        {% else %}
+            <p style="color: red;">
+                Indisponível
+            </p>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+
+            {% if produto.quantidade > 0 %}
+            <form action="/carrinho/adicionar" method="POST">
+                <button type="submit" class="btn btn-primary"
+                        style="width: 100%; padding: 12px; font-size: 16px;">
+                    🛒 Adicionar ao carrinho
+                </button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary" disabled style="width: 100%;">
+                Produto indisponível
+            </button>
+            {% endif %}
+
+        </div>
+
+        <div style="margin-top: 20px;">
+
+            {% if current_user.perfil == 'ADMIN' %}
+                <a href="/admin" class="btn btn-secondary" style="margin-right: 10px;">
+                    Voltar ao painel
+                </a>
+            {% else %}
+                <a href="/loja" class="btn btn-secondary">
+                    Voltar ao catálogo
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

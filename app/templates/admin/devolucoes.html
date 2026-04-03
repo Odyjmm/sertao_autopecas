@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Gerenciar Devoluções{% endblock %}
+
+{% block conteudo %}
+
+<h2 style="text-align: center;">Gerenciar Devoluções</h2>
+
+{% if devolucoes %}
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Pedido</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Cliente</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Motivo</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Data</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Status</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for d in devolucoes %}
+        <tr
+        {% if d.status == 'PENDENTE' %}
+            style="background-color: #fff8e1;"
+        {% elif d.status == 'RECUSADA' %}
+            style="background-color: #ffe5e5;"
+        {% endif %}
+        >
+
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ d.id }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ d.pedido.numero }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ d.pedido.usuario.nome }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ d.motivo }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ d.data.strftime('%d/%m/%Y %H:%M') }}
+            </td>
+
+            <!-- Status -->
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {% if d.status == 'PENDENTE' %}
+                    <span style="color: orange; font-weight: bold;">Pendente</span>
+                {% elif d.status == 'APROVADA' %}
+                    <span style="color: green; font-weight: bold;">Aprovada</span>
+                {% elif d.status == 'RECUSADA' %}
+                    <span style="color: red; font-weight: bold;">Recusada</span>
+                {% endif %}
+            </td>
+
+            <!-- Ações -->
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+
+                {% if d.status == 'PENDENTE' %}
+
+                <form action="/admin/devolucoes/{{ d.id }}/aprovar" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-primary" style="margin-bottom: 5px;">
+                        Aprovar
+                    </button>
+                </form>
+
+                <form action="/admin/devolucoes/{{ d.id }}/rejeitar" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-secondary">
+                        Rejeitar
+                    </button>
+                </form>
+
+                {% else %}
+                    <span>-</span>
+                {% endif %}
+
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% else %}
+
+<div style="text-align: center; margin-top: 30px;">
+    <p>Nenhuma devolução encontrada.</p>
+</div>
+
+{% endif %}
+
+{% endblock %}

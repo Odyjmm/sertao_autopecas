@@ -1,41 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Busca</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h2>Resultado da busca</h2>
-<p>Você buscou por: <strong>{{ termo }}</strong></p>
-<hr>
+{% block titulo %}Busca{% endblock %}
+
+{% block conteudo %}
+
+<h2 style="text-align: center;">Resultado da busca</h2>
+
+<div style="text-align: center; margin-top: 10px;">
+    <p>Você buscou por: <strong>{{ termo }}</strong></p>
+</div>
+
+<div style="
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+">
 
 {% if produtos and produtos|length > 0 %}
 
     {% for produto in produtos %}
-        <p>{{ produto.nome }}</p>
-        <p>Preço: R$ {{ produto.preco | moeda }}</p>
+    <div style="
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    ">
 
-        {% if produto.quantidade > 0 %}
-            <p>Em estoque ({{ produto.quantidade }} unidades)</p>
-        {% else %}
-            <p>Indisponível</p>
+        {% if produto.quantidade > 0 and produto.quantidade <= 5 %}
+            <span style="
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background: orange;
+                color: white;
+                padding: 3px 8px;
+                border-radius: 5px;
+                font-size: 12px;
+            ">
+                🔥 Últimas unidades
+            </span>
         {% endif %}
 
-        <a href="/produto/{{ produto.id }}">Ver detalhes</a>
-        <hr>
+        {% if produto.imagem %}
+            <div style="text-align: center; margin-bottom: 10px;">
+                <img src="/static/uploads/{{ produto.imagem }}"
+                     style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+            </div>
+        {% endif %}
+
+        <div>
+            <p style="font-weight: bold; margin-bottom: 5px;">
+                {{ produto.nome }}
+            </p>
+
+            <p style="margin-bottom: 5px;">
+                R$ {{ produto.preco | moeda }}
+            </p>
+
+            {% if produto.quantidade > 0 %}
+                <p style="color: green; font-size: 14px;">
+                    Em estoque ({{ produto.quantidade }})
+                </p>
+            {% else %}
+                <p style="color: red; font-size: 14px;">
+                    Indisponível
+                </p>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
+            
+            <a href="/produto/{{ produto.id }}" 
+               class="btn btn-secondary" 
+               style="width: 100%; text-align: center;">
+                Ver detalhes
+            </a>
+
+            {% if produto.quantidade > 0 %}
+            <form action="/carrinho/adicionar" method="POST">
+                <input type="hidden" name="produto_id" value="{{ produto.id }}">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    🛒 Adicionar ao carrinho
+                </button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary" disabled style="width: 100%;">
+                Indisponível
+            </button>
+            {% endif %}
+
+        </div>
+
+    </div>
     {% endfor %}
 
 {% else %}
 
-    <p>Nenhum produto encontrado para "{{ termo }}".</p>
-    <p>Tente outro nome ou código.</p>
+    <div style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
+        <p><strong>Nenhum produto encontrado para "{{ termo }}"</strong></p>
+        <p>Tente outro nome ou código.</p>
+    </div>
 
 {% endif %}
 
-<a href="/loja">Voltar ao catálogo</a>
-<br>
-<a href="/logout">Sair</a>
+</div>
 
-</body>
-</html>
+<div style="text-align: center; margin-top: 30px;">
+    <a href="/loja" class="btn btn-primary" style="margin-right: 10px;">
+        Voltar ao catálogo
+    </a>
+</div>
+
+{% endblock %}

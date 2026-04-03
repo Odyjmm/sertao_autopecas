@@ -1,26 +1,58 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Pedido {{ pedido.numero }}</title>
-</head>
-<body>
-    <h1>Pedido {{ pedido.numero }}</h1>
+{% extends 'base.html' %}
 
-    <p>Status: {{ pedido.status }}</p>
+{% block titulo %}Detalhes - Pedido {{ pedido.numero }}{% endblock %}
 
-    <h2>Itens</h2>
-    <ul>
-    {% for item in itens %}
-    <li>
-        {{ item.nome }} -
-        Quantidade: {{ item.quantidade }} -
-        Preço: R$ {{ item.preco_unitario | moeda }}
-    </li>
-    {% endfor %}
-    </ul>
+{% block conteudo %}
+<h2 style="text-align: center;">Pedido Nº {{ pedido.numero }}</h2>
 
-    <a href="/loja">Voltar ao catálogo</a>
-    <a href="/logout">Sair</a>
-</body>
-</html>
+<div style="margin-top: 20px; text-align: center;">
+    <p><strong>Status:</strong> {{ pedido.status }}</p>
+</div>
+
+<h3 style="margin-top: 30px;">Itens do Pedido</h3>
+
+{% if itens %}
+<table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 10px; border: 1px solid #ddd;">Produto</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Quantidade</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Preço Unitário</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in itens %}
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ item.nome }}
+            </td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ item.quantidade }}
+            </td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                R$ {{ item.preco_unitario | moeda }}
+            </td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                R$ {{ (item.quantidade * item.preco_unitario) | moeda }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>Este pedido não possui itens.</p>
+{% endif %}
+
+<br><br>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="/meus-pedidos" class="btn btn-secondary" style="margin-right: 10px">
+        Voltar aos meus pedidos
+    </a>
+    <a href="/loja" class="btn btn-primary">
+        Voltar ao catálogo
+    </a>
+</div>
+
+{% endblock %}

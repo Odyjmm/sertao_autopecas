@@ -44,12 +44,13 @@
         <div style="margin-top: 20px;">
 
             {% if produto.quantidade > 0 %}
-            <form action="/carrinho/adicionar" method="POST">
-                <button type="submit" class="btn btn-primary"
-                        style="width: 100%; padding: 12px; font-size: 16px;">
-                    🛒 Adicionar ao carrinho
-                </button>
-            </form>
+                <form action="/carrinho/adicionar" method="POST">
+                    <input type="hidden" name="produto_id" value="{{ produto.id }}">
+                    <button type="submit" class="btn btn-primary"
+                            style="width: 100%; padding: 12px; font-size: 16px;">
+                        🛒 Adicionar ao carrinho
+                    </button>
+                </form>
             {% else %}
             <button class="btn btn-secondary" disabled style="width: 100%;">
                 Produto indisponível

@@ -129,6 +129,9 @@ def gerenciar_devolucao(id, acao):
     if acao == 'aprovar':
         devolucao.status = 'APROVADA'
         devolucao.pedido.status = 'DEVOLVIDO'
+
+        for item in devolucao.pedido.itens:
+            item.produto.quantidade += item.quantidade
     elif acao == 'rejeitar':
         devolucao.status = 'RECUSADA'
         devolucao.pedido.status = 'CONFIRMADO'

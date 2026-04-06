@@ -5,6 +5,10 @@
 {% block conteudo %}
 <h2 style="text-align: center;">Tela de Login</h2>
 
+{% if erro %}
+<div class="msg-erro">{{ erro }}</div>
+{% endif %}
+
 <div style="max-width: 400px; margin: 0 auto; margin-top: 30px;">
 
     <form action="/login" method="POST">

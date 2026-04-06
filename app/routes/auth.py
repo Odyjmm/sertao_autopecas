@@ -9,7 +9,7 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get("email")  # ou "email"
+        email = request.form.get("email")
         senha = request.form.get("senha")
 
         usuario = Usuario.query.filter_by(email=email).first()
@@ -27,7 +27,7 @@ def login():
                 else:
                     return redirect('/loja')
 
-        return "Email ou senha inválidos"
+        return render_template('login.html', erro='Email ou senha inválidos!')
     return render_template('login.html')
 
 @auth.route('/cadastro', methods=['GET', 'POST'])
@@ -41,7 +41,7 @@ def cadastro():
         estado = request.form.get("estado")
         cep = request.form.get("cep")
 
-        if Usuario.query.filter_by(email=email).first():
+        if Usuario.query.filter(Usuario.email.ilike(email)).first():
             return render_template('cadastro.html', erro='Email já cadastrado!')
 
         if senha != request.form.get("confirmar_senha"):

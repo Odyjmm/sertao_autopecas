@@ -73,7 +73,6 @@
                    placeholder="00000-000" required>
         </div>
 
-        <!-- Checkbox alinhado corretamente -->
         <div class="form-group" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
             <input type="checkbox" id="termos" name="termos" required style="margin: 0; width: auto;">
             <label for="termos" style="margin: 0; line-height: 1;">
@@ -99,7 +98,6 @@
 
 </div>
 
-<!-- JS simples -->
 <script>
 function validarSenha() {
     const senha = document.getElementById("senha").value;
@@ -112,7 +110,6 @@ function validarSenha() {
     return true;
 }
 
-// Máscara CEP
 document.getElementById("cep").addEventListener("input", function(e) {
     let valor = e.target.value.replace(/\D/g, "");
 

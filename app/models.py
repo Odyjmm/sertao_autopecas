@@ -20,7 +20,7 @@ class Produto(db.Model):
     categoria = db.Column(db.String(100), nullable=False)
     preco = db.Column(db.Float, nullable=False)
     quantidade = db.Column(db.Integer, nullable=False)
-    imagem = db.Column(db.String(200), nullable=True)
+    imagem = db.Column(db.String(200), nullable=True, default='sem_imagem.jpg')
 
 class Pedido(db.Model):
     id = db.Column(db.Integer, primary_key=True)

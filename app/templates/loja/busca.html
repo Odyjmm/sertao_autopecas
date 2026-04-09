@@ -17,7 +17,6 @@
     margin-top: 30px;
 ">
 
-{% if produtos and produtos|length > 0 %}
 
     {% for produto in produtos %}
     <div style="
@@ -29,10 +28,11 @@
         flex-direction: column;
         justify-content: space-between;
         position: relative;
+        background-color: white
     ">
 
         {% if produto.quantidade > 0 and produto.quantidade <= 5 %}
-            <span style="
+        <span style="
                 position: absolute;
                 top: 10px;
                 left: 10px;
@@ -47,10 +47,10 @@
         {% endif %}
 
         {% if produto.imagem %}
-            <div style="text-align: center; margin-bottom: 10px;">
-                <img src="/static/uploads/{{ produto.imagem }}"
-                     style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
-            </div>
+        <div style="text-align: center; margin-bottom: 10px;">
+            <img src="/static/uploads/{{ produto.imagem }}"
+                 style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+        </div>
         {% endif %}
 
         <div>
@@ -63,20 +63,20 @@
             </p>
 
             {% if produto.quantidade > 0 %}
-                <p style="color: green; font-size: 14px;">
-                    Em estoque ({{ produto.quantidade }})
-                </p>
+            <p style="color: green; font-size: 14px;">
+                Em estoque ({{ produto.quantidade }})
+            </p>
             {% else %}
-                <p style="color: red; font-size: 14px;">
-                    Indisponível
-                </p>
+            <p style="color: red; font-size: 14px;">
+                Indisponível
+            </p>
             {% endif %}
         </div>
 
         <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
-            
-            <a href="/produto/{{ produto.id }}" 
-               class="btn btn-secondary" 
+
+            <a href="/produto/{{ produto.id }}"
+               class="btn btn-secondary"
                style="width: 100%; text-align: center;">
                 Ver detalhes
             </a>
@@ -98,15 +98,6 @@
 
     </div>
     {% endfor %}
-
-{% else %}
-
-    <div style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
-        <p><strong>Nenhum produto encontrado para "{{ termo }}"</strong></p>
-        <p>Tente outro nome ou código.</p>
-    </div>
-
-{% endif %}
 
 </div>
 

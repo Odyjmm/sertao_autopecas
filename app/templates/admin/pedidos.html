@@ -3,7 +3,7 @@
 {% block titulo %}Lista de Pedidos{% endblock %}
 
 {% block conteudo %}
-    <h2>Lista de Pedidos</h2>
+    <h2 style='text-align: center;'>Lista de Pedidos</h2>
 
     {% if pedidos %}
         <table style="width: 100%; border-collapse: collapse;">
@@ -35,7 +35,8 @@
             </tbody>
         </table>
     {% else %}
-        <p>Nenhum pedido encontrado.</p>
+        <br>
+        <p style='text-align: center;'>Nenhum pedido encontrado.</p>
     {% endif %}
 
     <br><br><br>

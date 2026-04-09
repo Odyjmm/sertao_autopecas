@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Clientes{% endblock %}
+
+{% block conteudo %}
+
+<h2 style="text-align: center;">Clientes</h2>
+
+{% if clientes %}
+
+<table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Nome</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Email</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Cidade</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Tempo de cadastro</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Pedidos</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ cliente.id }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ cliente.nome }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ cliente.email }}
+            </td>
+
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                {{ cliente.cidade }} - {{ cliente.estado }}
+            </td>
+
+            <!-- Tempo desde cadastro -->
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ cliente.tempo_cadastro }}
+            </td>
+
+            <!-- Quantidade de pedidos -->
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                {{ cliente.total_pedidos }}
+            </td>
+
+            <!-- Ações -->
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                <a href="/admin/clientes/{{ cliente.id }}/pedidos" 
+                   class="btn btn-primary">
+                    Ver pedidos
+                </a>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<div style="text-align: center; margin-top: 30px;">
+    <p>Nenhum cliente encontrado.</p>
+</div>
+
+{% endif %}
+
+{% endblock %}

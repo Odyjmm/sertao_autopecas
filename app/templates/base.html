@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}Sertão Autopeças{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: #f5f5f5;
             color: #333333;
 
@@ -178,6 +178,7 @@
                 <a href="/meus-pedidos">Meus Pedidos</a>
             {% else %}
                 <a href="/admin">Painel Admistrativo</a>
+                <a href="/admin/clientes">Clientes</a>
                 <a href="/admin/pedidos">Pedidos</a>
                 <a href="/admin/devolucoes">Devoluções</a>
             {% endif %}
@@ -197,6 +198,44 @@
 <footer class="footer">
     <p>© 2026 Sertão Autopeças - Peça! A Gente Entrega!</p>
 </footer>
+
+<div id="toast" style="
+    display: none;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-weight: 500;
+    z-index: 9999;
+    color: #1a5c2a;
+">
+    Adicionado com sucesso ✅
+</div>
+
+<script>
+document.querySelectorAll('form[action="/carrinho/adicionar"]').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/carrinho/adicionar', {
+            method: 'POST',
+            body: formData
+        }).then(() => {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 1000);
+        });
+    });
+});
+</script>
 
 </body>
 </html>

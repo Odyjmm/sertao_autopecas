@@ -4,6 +4,14 @@
 
 {% block conteudo %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endwith %}
+
 <div style="margin-top: 20px;">
     <form action="/busca" method="GET" style="display: flex; gap: 10px;">
         <input type="text" name="q" placeholder="Buscar produto..."
@@ -29,6 +37,7 @@
         flex-direction: column;
         justify-content: space-between;
         position: relative;
+        background-color: white
     ">
 
         {% if produto.quantidade > 0 and produto.quantidade <= 5 %}
@@ -82,7 +91,9 @@
                 Ver detalhes
             </a>
 
-            {% if produto.quantidade > 0 %}
+            {% if current_user.is_authenticated and current_user.perfil == 'ADMIN' %}
+
+            {% elif produto.quantidade > 0 %}
             <form action="/carrinho/adicionar" method="POST">
                 <input type="hidden" name="produto_id" value="{{ produto.id }}">
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
@@ -97,5 +108,40 @@
     {% endfor %}
 
 </div>
+
+<script>
+const input = document.querySelector('input[name="q"]');
+const lista = document.createElement('ul');
+lista.style.cssText = 'position:absolute; top:100%; background:white; border:1px solid #ddd; list-style:none; padding:0; margin:0; width:100%; z-index:999;';
+input.parentElement.style.position = 'relative';
+input.parentElement.appendChild(lista);
+
+input.addEventListener('input', async function() {
+    const termo = this.value;
+    if (termo.length < 2) { lista.innerHTML = ''; return; }
+
+    const res = await fetch(`/busca/sugestoes?q=${termo}`);
+    const sugestoes = await res.json();
+
+    lista.innerHTML = '';
+    sugestoes.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = s.nome;
+        li.style.cssText = 'padding:8px; cursor:pointer;';
+        li.addEventListener('mouseover', () => li.style.background = '#f5f5f5');
+        li.addEventListener('mouseout', () => li.style.background = 'white');
+        li.addEventListener('click', () => {
+            input.value = s.nome;
+            lista.innerHTML = '';
+            input.closest('form').submit();
+        });
+        lista.appendChild(li);
+    });
+});
+
+document.addEventListener('click', e => {
+    if (!input.contains(e.target)) lista.innerHTML = '';
+});
+</script>
 
 {% endblock %}

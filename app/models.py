@@ -12,6 +12,8 @@ class Usuario(UserMixin, db.Model):
     cidade = db.Column(db.String(100), nullable=True)
     estado = db.Column(db.String(2), nullable=True)
     cep = db.Column(db.String(9), nullable=True)
+    data_cadastro = db.Column(db.DateTime, default=datetime.now)
+    pedidos = db.relationship('Pedido', back_populates='usuario')
 
 class Produto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,7 +30,7 @@ class Pedido(db.Model):
     data = db.Column(db.DateTime, default=datetime.now)
     status = db.Column(db.String, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
-    usuario = db.relationship('Usuario', backref='pedidos')
+    usuario = db.relationship('Usuario', back_populates='pedidos')
     itens = db.relationship('ItemPedido', backref='pedido')
 
 class ItemPedido(db.Model):

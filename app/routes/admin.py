@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, request, flash, current_app
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
-from app.models import Produto, Pedido, Devolucao
+from datetime import datetime
+from app.models import Produto, Pedido, Devolucao, Usuario
 from app import db
 import os
 
@@ -138,3 +139,40 @@ def gerenciar_devolucao(id, acao):
 
     db.session.commit()
     return redirect('/admin/devolucoes')
+
+
+@admin.route('/admin/clientes')
+@login_required
+def listar_clientes():
+    if current_user.perfil != 'ADMIN':
+        return redirect('/loja')
+
+    clientes = Usuario.query.filter_by(perfil='CLIENTE').all()
+
+    for cliente in clientes:
+        if cliente.data_cadastro:
+            diff = datetime.utcnow() - cliente.data_cadastro
+
+            dias = diff.days
+            if dias > 0:
+                cliente.tempo_cadastro = f"{dias} dias"
+            else:
+                horas = diff.seconds // 3600
+                cliente.tempo_cadastro = f"{horas} horas"
+        else:
+            cliente.tempo_cadastro = "N/A"
+
+        cliente.total_pedidos = len(cliente.pedidos)
+
+    return render_template('admin/clientes.html', clientes=clientes)
+
+
+@admin.route('/admin/clientes/<int:id>/pedidos')
+@login_required
+def pedidos_cliente(id):
+    if current_user.perfil != 'ADMIN':
+        return redirect('/loja')
+
+    cliente = Usuario.query.get_or_404(id)
+    pedidos = Pedido.query.filter_by(usuario_id=id).order_by(Pedido.data.desc()).all()
+    return render_template('admin/pedidos_cliente.html', cliente=cliente, pedidos=pedidos)

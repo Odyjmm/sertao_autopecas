@@ -33,11 +33,24 @@
                 R$ {{ item.subtotal | moeda }}
             </td>
 
-            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                <form action="/carrinho/remover" method="POST">
+            <td>
+                <form action="/carrinho/remover" method="POST" style="display:inline;">
                     <input type="hidden" name="produto_id" value="{{ item.produto.id }}">
-                    <button type="submit" class="btn btn-secondary"
-                            onclick="return confirm('Tem certeza que deseja remover este produto?')">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <button type="button" onclick="alterarQtdCarrinho(this, -1)"
+                            style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 16px;">
+                            −
+                        </button>
+                        <input type="number" name="quantidade" value="1" min="1" max="{{ item.quantidade }}"
+                            style="width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 5px; padding: 5px;">
+                        <button type="button" onclick="alterarQtdCarrinho(this, 1)"
+                            style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 16px;">
+                            +
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-danger" style="width: 100%; margin-top: 5px;"
+                        data-atual="{{ item.quantidade }}"
+                        onclick="return confirmarRemocao(this)">
                         Remover
                     </button>
                 </form>
@@ -47,6 +60,13 @@
 
     </tbody>
 </table>
+
+<form action="/carrinho/limpar" method="POST" style="display: inline;">
+    <button type="submit" class="btn btn-danger"
+        onclick="return confirm('Tem certeza que deseja limpar o carrinho?')">
+        🗑️ Limpar carrinho
+    </button>
+</form>
 
 <!-- Total -->
 <div style="margin-top: 20px; text-align: right;">

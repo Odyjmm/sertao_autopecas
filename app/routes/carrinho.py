@@ -53,14 +53,15 @@ def adicionar_ao_carrinho():
 @login_required
 def remover_carrinho():
     produto_id = request.form.get('produto_id', type=int)
-
-    produto = Produto.query.get_or_404(produto_id)
+    quantidade = request.form.get('quantidade', type=int, default=1)
 
     cart = session.get('carrinho', {})
+    produto_id_str = str(produto_id)
 
-    produto_id_str = str(produto.id)
     if produto_id_str in cart:
-        del cart[produto_id_str]
+        cart[produto_id_str] -= quantidade
+        if cart[produto_id_str] <= 0:
+            del cart[produto_id_str]
 
     session['carrinho'] = cart
     session.modified = True
@@ -73,3 +74,10 @@ def quantidade_carrinho():
     cart = session.get('carrinho', {})
     total = sum(cart.values())
     return jsonify({'total': total})
+
+@carrinho.route('/carrinho/limpar', methods=['POST'])
+@login_required
+def limpar_carrinho():
+    session.pop('carrinho', None)
+    session.modified = True
+    return redirect('/carrinho')

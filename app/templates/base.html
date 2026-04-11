@@ -174,7 +174,26 @@
             <span class="navbar-user">Olá, {{ current_user.nome }}!</span>
             {% if current_user.perfil == 'CLIENTE' %}
                 <a href="/loja">Loja</a>
-                <a href="/carrinho">Carrinho</a>
+                <a href="/carrinho" style="position: relative; text-decoration: none; color: white;">
+                    🛒
+                    {% if current_user.is_authenticated %}
+                        <span id="badge-carrinho" style="
+                            position: absolute;
+                            top: -8px;
+                            right: -8px;
+                            background: white;
+                            color: #1a5c2a;
+                            border-radius: 50%;
+                            width: 18px;
+                            height: 18px;
+                            font-size: 11px;
+                            font-weight: bold;
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                        "></span>
+                    {% endif %}
+                </a>
                 <a href="/meus-pedidos">Meus Pedidos</a>
             {% else %}
                 <a href="/admin">Painel Admistrativo</a>
@@ -218,23 +237,62 @@
 </div>
 
 <script>
-document.querySelectorAll('form[action="/carrinho/adicionar"]').forEach(form => {
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
 
-        const formData = new FormData(this);
+    // ADICIONAR AO CARRINHO
+    const forms = document.querySelectorAll('form[action="/carrinho/adicionar"]');
 
-        fetch('/carrinho/adicionar', {
-            method: 'POST',
-            body: formData
-        }).then(() => {
-            const toast = document.getElementById('toast');
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 1000);
+    forms.forEach(form => {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            try {
+                await fetch('/carrinho/adicionar', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // Exibe toast
+                const toast = document.getElementById('toast');
+                if (toast) {
+                    toast.style.display = 'block';
+                    setTimeout(() => {
+                        toast.style.display = 'none';
+                    }, 1000);
+                }
+
+                // Atualiza contador após adicionar
+                atualizarContadorCarrinho();
+
+            } catch (error) {
+                console.error('Erro ao adicionar ao carrinho:', error);
+            }
         });
     });
+
+    // ATUALIZAR CONTADOR
+    async function atualizarContadorCarrinho() {
+        try {
+            const res = await fetch('/carrinho/quantidade');
+            const data = await res.json();
+
+            const badge = document.getElementById('badge-carrinho');
+
+            if (badge) {
+                badge.textContent = data.total > 0 ? data.total : '';
+                badge.style.display = data.total > 0 ? 'flex' : 'none';
+            }
+
+        } catch (error) {
+            console.error('Erro ao atualizar carrinho:', error);
+        }
+    }
+
+    // Inicializa ao carregar a página
+    atualizarContadorCarrinho();
+
 });
 </script>
 

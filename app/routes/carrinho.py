@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect, request, render_template
+from flask import Blueprint, session, redirect, request, render_template, jsonify
 from flask_login import login_required
 from app.models import Produto
 
@@ -65,3 +65,10 @@ def remover_carrinho():
     session.modified = True
 
     return redirect('/carrinho')
+
+@carrinho.route('/carrinho/quantidade')
+@login_required
+def quantidade_carrinho():
+    cart = session.get('carrinho', {})
+    total = sum(cart.values())
+    return jsonify({'total': total})

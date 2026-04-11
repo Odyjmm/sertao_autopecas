@@ -94,12 +94,26 @@
             {% if current_user.is_authenticated and current_user.perfil == 'ADMIN' %}
 
             {% elif produto.quantidade > 0 %}
-            <form action="/carrinho/adicionar" method="POST">
-                <input type="hidden" name="produto_id" value="{{ produto.id }}">
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    🛒 Adicionar ao carrinho
-                </button>
-            </form>
+                <form action="/carrinho/adicionar" method="POST">
+                    <input type="hidden" name="produto_id" value="{{ produto.id }}">
+
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+                        <button type="button" onclick="alterarQtd(this, -1)"
+                            style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 16px;">
+                            −
+                        </button>
+                        <input type="number" name="quantidade" value="1" min="1" max="{{ produto.quantidade }}"
+                            style="width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 5px; padding: 5px;">
+                        <button type="button" onclick="alterarQtd(this, 1)"
+                            style="width: 30px; height: 30px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 16px;">
+                            +
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        🛒 Adicionar ao carrinho
+                    </button>
+                </form>
             {% endif %}
 
         </div>

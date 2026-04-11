@@ -160,6 +160,16 @@
             padding: 20px;
             font-size: 13px;
         }
+
+        /* Remove setas do input number */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
     {% block estilos %}{% endblock %}
 </head>
@@ -237,6 +247,16 @@
 </div>
 
 <script>
+function alterarQtd(btn, delta) {
+    const input = btn.closest('div').querySelector('input[name="quantidade"]');
+    const novoValor = parseInt(input.value) + delta;
+    const min = parseInt(input.min);
+    const max = parseInt(input.max);
+    if (novoValor >= min && novoValor <= max) {
+        input.value = novoValor;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ADICIONAR AO CARRINHO
@@ -290,9 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Inicializa ao carregar a página
     atualizarContadorCarrinho();
-
 });
 </script>
 

@@ -32,6 +32,7 @@ def ver_carrinho():
 @login_required
 def adicionar_ao_carrinho():
     produto_id = request.form.get('produto_id', type=int)
+    quantidade = request.form.get('quantidade', type=int, default=1)
 
     produto = Produto.query.get_or_404(produto_id)
 
@@ -39,14 +40,14 @@ def adicionar_ao_carrinho():
 
     produto_id_str = str(produto.id)
     if produto_id_str in cart:
-        cart[produto_id_str] += 1
+        cart[produto_id_str] += quantidade
     else:
-        cart[produto_id_str] = 1
+        cart[produto_id_str] = quantidade
 
     session['carrinho'] = cart
     session.modified = True
 
-    return redirect('/loja')
+    return '', 204
 
 @carrinho.route('/carrinho/remover', methods=['POST'])
 @login_required

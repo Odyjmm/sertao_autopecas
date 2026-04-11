@@ -5,208 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}Sertão Autopeças{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/componentes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/utils.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carrinho.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.jpeg') }}">
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f5f5f5;
-            color: #333333;
-
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* NAVBAR */
-        .navbar {
-            background-color: #1a5c2a;
-            padding: 12px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .navbar img {
-            height: 60px;
-        }
-
-        .navbar-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .navbar-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        .navbar-links a:hover {
-            color: #f9c200;
-        }
-
-        .navbar-user {
-            color: #f9c200;
-            font-weight: 500;
-        }
-
-        /* CONTEÚDO */
-        .container {
-            max-width: 1100px;
-            width: 100%;
-            margin: 30px auto;
-            padding: 0 20px;
-
-            flex: 1;
-        }
-
-        /* BOTÕES */
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background-color: #f9c200;
-            color: #333333;
-        }
-
-        .btn-primary:hover {
-            background-color: #e0ac00;
-        }
-
-        .btn-danger {
-            background-color: #e67e22;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #d35400;
-        }
-
-        .btn-secondary {
-            background-color: #2e7d32;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #1a5c2a;
-        }
-
-        /* CARDS */
-        .card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        /* FORMULÁRIOS */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        /* MENSAGENS */
-        .msg-erro {
-            color: #c0392b;
-            background-color: #fdecea;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-
-        .msg-sucesso {
-            color: #1a5c2a;
-            background-color: #e8f5e9;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-
-        /* RODAPÉ */
-        .footer {
-            background-color: #1a5c2a;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-            font-size: 13px;
-        }
-
-        /* Remove setas do input number */
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
     {% block estilos %}{% endblock %}
 </head>
 <body>
 
 <nav class="navbar">
     <a href="/loja">
-        <img src="/static/logo.jpeg" alt="Sertão Autopeças">
+        <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Sertão Autopeças">
     </a>
     <div class="navbar-links">
         {% if current_user.is_authenticated %}
             <span class="navbar-user">Olá, {{ current_user.nome }}!</span>
             {% if current_user.perfil == 'CLIENTE' %}
                 <a href="/loja">Loja</a>
-                <a href="/carrinho" style="position: relative; text-decoration: none; color: white;">
+                <a href="/carrinho" aria-label="Carrinho" style="position: relative; text-decoration: none; color: white;">
                     🛒
-                    {% if current_user.is_authenticated %}
-                        <span id="badge-carrinho" style="
-                            position: absolute;
-                            top: -8px;
-                            right: -8px;
-                            background: white;
-                            color: #1a5c2a;
-                            border-radius: 50%;
-                            width: 18px;
-                            height: 18px;
-                            font-size: 11px;
-                            font-weight: bold;
-                            display: none;
-                            align-items: center;
-                            justify-content: center;
-                        "></span>
-                    {% endif %}
+                    <span id="badge-carrinho"></span>
                 </a>
                 <a href="/meus-pedidos">Meus Pedidos</a>
             {% else %}
-                <a href="/admin">Painel Admistrativo</a>
+                <a href="/admin">Painel Administrativo</a>
                 <a href="/">Loja</a>
                 <a href="/admin/clientes">Clientes</a>
                 <a href="/admin/pedidos">Pedidos</a>
@@ -229,122 +55,13 @@
     <p>© 2026 Sertão Autopeças - Peça! A Gente Entrega!</p>
 </footer>
 
-<div id="toast" style="
-    display: none;
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    font-weight: 500;
-    z-index: 9999;
-    color: #1a5c2a;
-">
+<div id="toast">
     Adicionado com sucesso ✅
 </div>
 
-<script>
-function alterarQtd(btn, delta) {
-    const input = btn.closest('div').querySelector('input[name="quantidade"]');
-    const novoValor = parseInt(input.value) + delta;
-    const min = parseInt(input.min);
-    const max = parseInt(input.max);
-    if (novoValor >= min && novoValor <= max) {
-        input.value = novoValor;
-    }
-}
-
-function alterarQtdCarrinho(btn, delta) {
-    const input = btn.closest('div').querySelector('input[name="quantidade"]');
-    const novoValor = parseInt(input.value) + delta;
-    const min = parseInt(input.min);
-    const max = parseInt(input.max);
-    if (novoValor >= min && novoValor <= max) {
-        input.value = novoValor;
-    }
-}
-
-function confirmarRemocao(btn) {
-    const input = btn.closest('form').querySelector('input[name="quantidade"]');
-    const qtdRemover = parseInt(input.value);
-    const qtdAtual = parseInt(btn.dataset.atual);
-
-    if (qtdRemover >= qtdAtual) {
-        return confirm('Isso vai remover este item do carrinho. Tem certeza?');
-    }
-    return true;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    // ADICIONAR AO CARRINHO
-    const forms = document.querySelectorAll('form[action="/carrinho/adicionar"]');
-
-    forms.forEach(form => {
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-
-            try {
-                await fetch('/carrinho/adicionar', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                // Exibe toast
-                const toast = document.getElementById('toast');
-                if (toast) {
-                    toast.style.display = 'block';
-                    setTimeout(() => {
-                        toast.style.display = 'none';
-                    }, 1000);
-                }
-
-                // Atualiza contador após adicionar
-                atualizarContadorCarrinho();
-
-            } catch (error) {
-                console.error('Erro ao adicionar ao carrinho:', error);
-            }
-        });
-    });
-
-    document.querySelectorAll('input[name="quantidade"]').forEach(input => {
-        input.addEventListener('change', function() {
-            const min = parseInt(this.min);
-            const max = parseInt(this.max);
-            let valor = parseInt(this.value);
-
-            if (isNaN(valor) || valor < min) this.value = min;
-            if (valor > max) this.value = max;
-        });
-    });
-
-    // ATUALIZAR CONTADOR
-    async function atualizarContadorCarrinho() {
-        try {
-            const res = await fetch('/carrinho/quantidade');
-            const data = await res.json();
-
-            const badge = document.getElementById('badge-carrinho');
-
-            if (badge) {
-                badge.textContent = data.total > 0 ? data.total : '';
-                badge.style.display = data.total > 0 ? 'flex' : 'none';
-            }
-
-        } catch (error) {
-            console.error('Erro ao atualizar carrinho:', error);
-        }
-    }
-
-    atualizarContadorCarrinho();
-});
-</script>
+<script src="{{ url_for('static', filename='utils.js') }}" defer></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+<script src="{{ url_for('static', filename='carrinho.js') }}" defer></script>
 
 </body>
 </html>

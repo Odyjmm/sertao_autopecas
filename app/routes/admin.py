@@ -151,7 +151,7 @@ def listar_clientes():
 
     for cliente in clientes:
         if cliente.data_cadastro:
-            diff = datetime.utcnow() - cliente.data_cadastro
+            diff = datetime.now() - cliente.data_cadastro
 
             dias = diff.days
             if dias > 0:

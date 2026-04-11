@@ -1,18 +1,13 @@
 from flask import Blueprint, render_template, request, flash, redirect, jsonify
 from flask_login import current_user
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from app.models import Produto
 
 loja = Blueprint('loja', __name__)
 
 @loja.route('/loja')
 def loja_home():
-    produtos = Produto.query.filter(Produto.quantidade > 0).all()
-    return render_template('loja/catalogo.html', produtos=produtos, current_user=current_user)
-
-@loja.route('/')
-def index():
-    produtos = Produto.query.filter(Produto.quantidade > 0).all()
+    produtos = Produto.query.filter(Produto.quantidade > 0).order_by(func.random()).all()
     return render_template('loja/catalogo.html', produtos=produtos, current_user=current_user)
 
 @loja.route('/produto/<int:id>')
@@ -59,3 +54,7 @@ def sugestoes():
     ).limit(5).all()
 
     return jsonify([{'id': p.id, 'nome': p.nome} for p in produtos])
+
+@loja.route('/')
+def index():
+    return redirect('/loja')

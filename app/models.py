@@ -1,6 +1,11 @@
 from app import db, login_manager
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+BRASILIA = timezone(timedelta(hours=-3))
+
+def agora_brasilia():
+    return datetime.now(BRASILIA).replace(tzinfo=None)
 
 class Usuario(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -12,7 +17,7 @@ class Usuario(UserMixin, db.Model):
     cidade = db.Column(db.String(100), nullable=True)
     estado = db.Column(db.String(2), nullable=True)
     cep = db.Column(db.String(9), nullable=True)
-    data_cadastro = db.Column(db.DateTime, default=datetime.now)
+    data_cadastro = db.Column(db.DateTime, default=agora_brasilia)
     pedidos = db.relationship('Pedido', back_populates='usuario')
 
 class Produto(db.Model):
@@ -22,12 +27,12 @@ class Produto(db.Model):
     categoria = db.Column(db.String(100), nullable=False)
     preco = db.Column(db.Float, nullable=False)
     quantidade = db.Column(db.Integer, nullable=False, default=0)
-    imagem = db.Column(db.String(200), nullable=True, default='sem_imagem.jpg')
+    imagem = db.Column(db.String(200), nullable=True, default='default.jpg')
 
 class Pedido(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     numero = db.Column(db.String, nullable=False, unique=True)
-    data = db.Column(db.DateTime, default=datetime.now)
+    data = db.Column(db.DateTime, default=agora_brasilia)
     status = db.Column(db.String, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     usuario = db.relationship('Usuario', back_populates='pedidos')
@@ -47,7 +52,7 @@ class Devolucao(db.Model):
     pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'), nullable=False)
     motivo = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False)
-    data = db.Column(db.DateTime, default=datetime.now)
+    data = db.Column(db.DateTime, default=agora_brasilia)
     pedido = db.relationship('Pedido', backref='devolucoes')
 
 @login_manager.user_loader

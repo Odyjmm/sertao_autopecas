@@ -130,10 +130,10 @@ input.addEventListener('input', async function() {
         li.style.cssText = 'padding:8px; cursor:pointer;';
         li.addEventListener('mouseover', () => li.style.background = '#f5f5f5');
         li.addEventListener('mouseout', () => li.style.background = 'white');
-        li.addEventListener('click', () => {
-            input.value = s.nome;
-            lista.innerHTML = '';
-            input.closest('form').submit();
+        li.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            window.location.href = `/produto/${s.id}`;
         });
         lista.appendChild(li);
     });

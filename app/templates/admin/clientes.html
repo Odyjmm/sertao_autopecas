@@ -41,17 +41,14 @@
                 {{ cliente.cidade }} - {{ cliente.estado }}
             </td>
 
-            <!-- Tempo desde cadastro -->
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                 {{ cliente.tempo_cadastro }}
             </td>
 
-            <!-- Quantidade de pedidos -->
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                 {{ cliente.total_pedidos }}
             </td>
 
-            <!-- Ações -->
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                 <a href="/admin/clientes/{{ cliente.id }}/pedidos" 
                    class="btn btn-primary">

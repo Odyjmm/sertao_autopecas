@@ -51,7 +51,6 @@
                 {{ d.data.strftime('%d/%m/%Y %H:%M') }}
             </td>
 
-            <!-- Status -->
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                 {% if d.status == 'PENDENTE' %}
                     <span style="color: orange; font-weight: bold;">Pendente</span>
@@ -62,7 +61,6 @@
                 {% endif %}
             </td>
 
-            <!-- Ações -->
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
 
                 {% if d.status == 'PENDENTE' %}

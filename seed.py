@@ -67,12 +67,12 @@ with app.app_context():
         ('Cabo de Freio de Mão', 'FR-006', 'Freios', 45.00, 15),
 
         # Suspensão e Direção
-        ('Amortecedor Dianteiro', 'SS-001', 'Suspensão', 380.00, 6),
-        ('Kit Batente Amortecedor', 'SS-002', 'Suspensão', 95.00, 20),
-        ('Pivô de Suspensão', 'SS-003', 'Suspensão', 68.00, 14),
-        ('Bucha da Bandeja', 'SS-004', 'Suspensão', 22.00, 30),
-        ('Terminal de Direção', 'SS-005', 'Suspensão', 55.00, 12),
-        ('Mola Helicoidal Traseira', 'SS-006', 'Suspensão', 190.00, 4),
+        ('Amortecedor Dianteiro', 'SPS-001', 'Suspensão', 380.00, 6),
+        ('Kit Batente Amortecedor', 'SPS-002', 'Suspensão', 95.00, 20),
+        ('Pivô de Suspensão', 'SPS-003', 'Suspensão', 68.00, 14),
+        ('Bucha da Bandeja', 'SPS-004', 'Suspensão', 22.00, 30),
+        ('Terminal de Direção', 'SPS-005', 'Suspensão', 55.00, 12),
+        ('Mola Helicoidal Traseira', 'SPS-006', 'Suspensão', 190.00, 4),
 
         # Motor e Transmissão
         ('Correia Dentada HTD', 'MT-001', 'Motor', 85.00, 18),

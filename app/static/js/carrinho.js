@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
+            if (!usuarioLogado) {
+                window.location.href = '/login?msg=carrinho';
+                return;
+            }
+
             const formData = new FormData(this);
 
             try {
@@ -52,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    atualizarContadorCarrinho();
+    if (typeof usuarioLogado !== 'undefined' && usuarioLogado) {
+        atualizarContadorCarrinho();
+    }
 
 });

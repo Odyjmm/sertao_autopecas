@@ -6,6 +6,7 @@ from app.models import Usuario
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -28,7 +29,12 @@ def login():
                     return redirect('/loja')
 
         return render_template('login.html', erro='Email ou senha inválidos!')
-    return render_template('login.html')
+
+    erro = None
+    if request.args.get('msg') == 'carrinho':
+        erro = 'Por favor, crie uma conta ou faça login para continuar a compra.'
+
+    return render_template('login.html', erro=erro)
 
 @auth.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():

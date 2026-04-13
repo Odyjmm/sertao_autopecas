@@ -59,9 +59,12 @@
     Adicionado com sucesso ✅
 </div>
 
-<script src="{{ url_for('static', filename='utils.js') }}" defer></script>
-<script src="{{ url_for('static', filename='main.js') }}" defer></script>
-<script src="{{ url_for('static', filename='carrinho.js') }}" defer></script>
+<script>
+    const usuarioLogado = {{ 'true' if current_user.is_authenticated else 'false' }};
+</script>
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
 
 </body>
 </html>

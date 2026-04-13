@@ -9,12 +9,15 @@ function validarSenha() {
     return true;
 }
 
-document.getElementById("cep").addEventListener("input", function(e) {
-    let valor = e.target.value.replace(/\D/g, "");
+const cep = document.getElementById("cep");
+if (cep) {
+    cep.addEventListener("input", function(e) {
+        let valor = e.target.value.replace(/\D/g, "");
 
-    if (valor.length > 5) {
-        valor = valor.slice(0,5) + "-" + valor.slice(5,8);
-    }
+        if (valor.length > 5) {
+            valor = valor.slice(0,5) + "-" + valor.slice(5,8);
+        }
 
-    e.target.value = valor;
-});
+        e.target.value = valor;
+    });
+}

@@ -21,7 +21,10 @@
     <a href="/loja">
         <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Sertão Autopeças">
     </a>
-    <div class="navbar-links">
+
+    <button class="menu-hamburguer" id="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <div class="navbar-links" id="navbar-links">
         {% if current_user.is_authenticated %}
             <span class="navbar-user">Olá, {{ current_user.nome }}!</span>
             {% if current_user.perfil == 'CLIENTE' %}

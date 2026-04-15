@@ -12,3 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+function toggleMenu() {
+    const links = document.getElementById('navbar-links');
+    links.classList.toggle('aberto');
+}
+
+document.addEventListener('click', function(e) {
+    const navbar = document.querySelector('.navbar');
+    const btn = document.getElementById('menu-btn');
+    if (!navbar.contains(e.target)) {
+        document.getElementById('navbar-links').classList.remove('aberto');
+    }
+});

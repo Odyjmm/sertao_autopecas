@@ -4,7 +4,7 @@ Plataforma de e-commerce para venda de peças automotivas, desenvolvida com Flas
 
 ## Tecnologias utilizadas
 
-- Python 3.x + Flask
+- Python 3.11 + Flask
 - SQLAlchemy + SQLite
 - Flask-Login (autenticação)
 - Jinja2 (templates HTML)
@@ -12,7 +12,7 @@ Plataforma de e-commerce para venda de peças automotivas, desenvolvida com Flas
 
 ## Pré-requisitos
 
-- [Python 3.x](https://www.python.org/downloads/)
+- [Python 3.11](https://www.python.org/downloads/)
 - [Git](https://git-scm.com/)
 
 ## Como rodar o projeto
@@ -104,9 +104,10 @@ O servidor estará disponível em `http://localhost:5000`
 
 ## Estrutura do projeto
 
+```bash
 sertao-autopecas/
 ├── app/
-│   ├── init.py         ← inicializa a aplicação
+│   ├── __init__.py         ← inicializa a aplicação
 │   ├── models.py           ← modelos do banco de dados
 │   ├── routes/
 │   │   ├── auth.py         ← login, cadastro e logout
@@ -134,3 +135,4 @@ sertao-autopecas/
 ├── seed.py                 ← popula o banco com dados iniciais
 ├── run.py                  ← inicia o servidor
 └── requirements.txt
+```

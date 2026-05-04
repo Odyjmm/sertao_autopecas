@@ -1,7 +1,7 @@
 # Sertão Autopeças — Sistema de E-commerce
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Flask](https://img.shields.io/badge/Flask-2.x-black)
+![Flask](https://img.shields.io/badge/Flask-3.1.3-black)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 
@@ -23,7 +23,6 @@ O sistema suporta dois perfis de usuário: **Cliente** e **Administrador**, cada
 ## 📦 Pré-requisitos
 
 - Python 3.11+
-- Git
 
 ---
 
@@ -118,7 +117,7 @@ O servidor estará disponível em `http://localhost:5000`
 
 ## 🗂️ Estrutura do projeto
 
-```bash
+```text
 sertao-autopecas/
 ├── app/
 │   ├── __init__.py         ← inicializa a aplicação

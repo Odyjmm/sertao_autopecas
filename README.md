@@ -8,23 +8,21 @@
 Plataforma de e-commerce para venda de peças automotivas, desenvolvida com Flask (Python).  
 O sistema suporta dois perfis de usuário: **Cliente** e **Administrador**, cada um com funcionalidades específicas.
 
----
-
 ## 🚀 Tecnologias utilizadas
 
 - Python 3.11 + Flask
 - SQLAlchemy + SQLite
-- Flask-Login (autenticação)
-- Jinja2 (templates HTML)
-- HTML, CSS e JavaScript
-
----
+- Flask-Login
+- Jinja2
+- HTML
+- CSS
+- JavaScript <br></br>
 
 ## 📦 Pré-requisitos
 
 - Python 3.11+
-
----
+- Flask 3.1.3
+- Git <br></br>
 
 ## ⚙️ Como rodar o projeto
 
@@ -67,9 +65,7 @@ python seed.py
 python run.py
 ```
 
-O servidor estará disponível em `http://localhost:5000`
-
----
+O servidor estará disponível em `http://localhost:5000` <br></br>
 
 ## 🔑 Credenciais de teste
 
@@ -78,10 +74,10 @@ O servidor estará disponível em `http://localhost:5000`
 | Administrador | admin@sistema.com | admin123 |
 | Cliente | joao.silva@email.com | cliente123 |
 | Cliente | maria.o@email.com | cliente123 |
-| Cliente | ricardo.auto@email.com | cliente123 |
+| Cliente | ricardo.auto@email.com | cliente123 | 
 
----
-
+⚠️ Use apenas para testes locais. <br></br>
+ 
 ## 🧩 Funcionalidades
 
 ### 👤 Cliente
@@ -94,7 +90,7 @@ O servidor estará disponível em `http://localhost:5000`
 - Finalização de compra com geração automática de número de pedido
 - Acompanhamento de pedidos com status atualizado
 - Solicitação de devolução com geração de protocolo
-- Aceite de Termos de Uso (LGPD) no cadastro
+- Aceite de Termos de Uso (LGPD) no cadastro <br></br>
 
 ### 🛠️ Administrador
 - Painel administrativo exclusivo
@@ -104,16 +100,14 @@ O servidor estará disponível em `http://localhost:5000`
 - Listagem de clientes com total de pedidos e tempo de cadastro
 - Visualização de pedidos por cliente
 - Gerenciamento de solicitações de devolução com aprovação ou rejeição
-- Atualização automática do estoque após aprovação de devolução
+- Atualização automática do estoque após aprovação de devolução <br></br>
 
 ### ⚙️ Sistema
 - Controle de acesso por perfil — clientes e administradores acessam apenas suas áreas
 - Atualização automática do estoque após cada compra
 - Geração de número único de pedido
 - Proteção de rotas para usuários não autenticados
-- Senhas armazenadas com hash BCrypt
-
----
+- Senhas armazenadas com hash BCrypt <br></br>
 
 ## 🗂️ Estrutura do projeto
 

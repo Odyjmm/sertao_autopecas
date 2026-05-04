@@ -1,8 +1,16 @@
 # Sertão Autopeças — Sistema de E-commerce
 
-Plataforma de e-commerce para venda de peças automotivas, desenvolvida com Flask (Python). O sistema suporta dois perfis de usuário: **Cliente** e **Administrador**, cada um com funcionalidades específicas.
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Flask](https://img.shields.io/badge/Flask-2.x-black)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 
-## Tecnologias utilizadas
+Plataforma de e-commerce para venda de peças automotivas, desenvolvida com Flask (Python).  
+O sistema suporta dois perfis de usuário: **Cliente** e **Administrador**, cada um com funcionalidades específicas.
+
+---
+
+## 🚀 Tecnologias utilizadas
 
 - Python 3.11 + Flask
 - SQLAlchemy + SQLite
@@ -10,17 +18,21 @@ Plataforma de e-commerce para venda de peças automotivas, desenvolvida com Flas
 - Jinja2 (templates HTML)
 - HTML, CSS e JavaScript
 
-## Pré-requisitos
+---
 
-- [Python 3.11](https://www.python.org/downloads/)
-- [Git](https://git-scm.com/)
+## 📦 Pré-requisitos
 
-## Como rodar o projeto
+- Python 3.11+
+- Git
+
+---
+
+## ⚙️ Como rodar o projeto
 
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/sertao-autopecas.git
+git clone https://github.com/Odyjmm/sertao-autopecas.git
 cd sertao-autopecas
 ```
 
@@ -60,18 +72,20 @@ O servidor estará disponível em `http://localhost:5000`
 
 ---
 
-## Credenciais de teste
+## 🔑 Credenciais de teste
 
 | Perfil | Email | Senha |
 |---|---|---|
 | Administrador | admin@sistema.com | admin123 |
 | Cliente | joao.silva@email.com | cliente123 |
+| Cliente | maria.o@email.com | cliente123 |
+| Cliente | ricardo.auto@email.com | cliente123 |
 
 ---
 
-## Funcionalidades
+## 🧩 Funcionalidades
 
-### Cliente
+### 👤 Cliente
 - Cadastro com nome, email, senha e endereço de entrega
 - Login e logout com sessão segura
 - Catálogo de peças disponíveis com busca por nome, código ou categoria
@@ -83,7 +97,7 @@ O servidor estará disponível em `http://localhost:5000`
 - Solicitação de devolução com geração de protocolo
 - Aceite de Termos de Uso (LGPD) no cadastro
 
-### Administrador
+### 🛠️ Administrador
 - Painel administrativo exclusivo
 - Visualização do inventário completo incluindo produtos sem estoque
 - Cadastro, edição e remoção de produtos com upload de imagem
@@ -93,7 +107,7 @@ O servidor estará disponível em `http://localhost:5000`
 - Gerenciamento de solicitações de devolução com aprovação ou rejeição
 - Atualização automática do estoque após aprovação de devolução
 
-### Sistema
+### ⚙️ Sistema
 - Controle de acesso por perfil — clientes e administradores acessam apenas suas áreas
 - Atualização automática do estoque após cada compra
 - Geração de número único de pedido
@@ -102,7 +116,7 @@ O servidor estará disponível em `http://localhost:5000`
 
 ---
 
-## Estrutura do projeto
+## 🗂️ Estrutura do projeto
 
 ```bash
 sertao-autopecas/

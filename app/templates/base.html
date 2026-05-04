@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/utils.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/carrinho.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='logo.jpeg') }}">
+    <link rel="icon" href="{{ url_for('static', filename='uploads/logo.jpeg') }}">
 
     {% block estilos %}{% endblock %}
 </head>
@@ -19,7 +19,7 @@
 
 <nav class="navbar">
     <a href="/loja">
-        <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Sertão Autopeças">
+        <img src="{{ url_for('static', filename='uploads/logo.jpeg') }}" alt="Sertão Autopeças">
     </a>
 
     <button class="menu-hamburguer" id="menu-btn" onclick="toggleMenu()">☰</button>

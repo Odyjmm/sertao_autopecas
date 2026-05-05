@@ -65,7 +65,7 @@ python seed.py
 python run.py
 ```
 
-O servidor estará disponível em `http://localhost:5000` <br></br>
+O servidor estará disponível em "[http://localhost:5000](http://localhost:5000)" <br></br>
 
 ## 🔑 Credenciais de teste
 

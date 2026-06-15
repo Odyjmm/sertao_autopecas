@@ -14,6 +14,9 @@ def create_app():
 
     application.config['SECRET_KEY'] = 'sertao-secret-key'
     application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+    application.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'connect_args': {'timeout': 15}
+    }
     application.config['SESSION_PERMANENT'] = False
 
     db.init_app(application)

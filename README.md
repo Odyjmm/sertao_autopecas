@@ -1,4 +1,4 @@
-# Sertão Autopeças — Sistema de E-commerce
+# Sertão Autopeças - Sistema de E-commerce
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.1.3-black)

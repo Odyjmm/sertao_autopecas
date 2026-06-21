@@ -48,6 +48,7 @@
         {% if produto.imagem %}
         <div style="text-align: center; margin-bottom: 10px;">
             <img src="/static/uploads/{{ produto.imagem }}"
+                 alt="{{ produto.nome }}"
                  style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
         </div>
         {% endif %}
@@ -82,6 +83,7 @@
 
             {% if produto.quantidade > 0 %}
                 <form action="/carrinho/adicionar" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="produto_id" value="{{ produto.id }}">
 
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
@@ -113,6 +115,20 @@
     {% endfor %}
 
 </div>
+
+{% if paginacao and paginacao.pages > 1 %}
+<div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 30px;">
+    {% if paginacao.has_prev %}
+        <a href="{{ url_for('loja.busca', q=termo, pagina=paginacao.prev_num) }}" class="btn btn-secondary">← Anterior</a>
+    {% endif %}
+
+    <span>Página {{ paginacao.page }} de {{ paginacao.pages }}</span>
+
+    {% if paginacao.has_next %}
+        <a href="{{ url_for('loja.busca', q=termo, pagina=paginacao.next_num) }}" class="btn btn-secondary">Próxima →</a>
+    {% endif %}
+</div>
+{% endif %}
 
 <div style="text-align: center; margin-top: 30px;">
     <a href="/loja" class="btn btn-primary" style="margin-right: 10px;">

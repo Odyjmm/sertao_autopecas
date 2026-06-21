@@ -14,6 +14,7 @@
     {% endif %}
 
     <form action="/cadastro" method="POST" onsubmit="return validarSenha()">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
         <div class="form-group" style="margin-bottom: 15px;">
             <label for="nome"><strong>Nome:</strong></label>

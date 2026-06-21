@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect, request, render_template, jsonify
+from flask import Blueprint, session, redirect, request, render_template, jsonify, flash
 from flask_login import login_required
 from app.models import Produto
 
@@ -10,17 +10,34 @@ def ver_carrinho():
     cart = session.get('carrinho', {})
     itens = []
     total = 0
+    alterado = False
 
-    for produto_id, quantidade in cart.items():
+    for produto_id in list(cart.keys()):
+        quantidade = cart[produto_id]
         produto = Produto.query.get(int(produto_id))
-        if produto:
-            subtotal = produto.preco * quantidade
-            total += subtotal
-            itens.append({
-                'produto': produto,
-                'quantidade': quantidade,
-                'subtotal': subtotal
-            })
+
+        if not produto or produto.quantidade <= 0:
+            del cart[produto_id]
+            alterado = True
+            continue
+
+        if quantidade > produto.quantidade:
+            quantidade = produto.quantidade
+            cart[produto_id] = quantidade
+            alterado = True
+
+        subtotal = produto.preco * quantidade
+        total += subtotal
+        itens.append({
+            'produto': produto,
+            'quantidade': quantidade,
+            'subtotal': subtotal
+        })
+
+    if alterado:
+        session['carrinho'] = cart
+        session.modified = True
+        flash('Alguns itens do seu carrinho foram ajustados por falta de estoque.', 'aviso')
 
     return render_template(
         'carrinho.html',
@@ -34,26 +51,35 @@ def adicionar_ao_carrinho():
     produto_id = request.form.get('produto_id', type=int)
     quantidade = request.form.get('quantidade', type=int, default=1)
 
+    if not produto_id or not quantidade or quantidade < 1:
+        return jsonify({'erro': 'Quantidade inválida.'}), 400
+
     produto = Produto.query.get_or_404(produto_id)
 
     cart = session.get('carrinho', {})
-
     produto_id_str = str(produto.id)
-    if produto_id_str in cart:
-        cart[produto_id_str] += quantidade
-    else:
-        cart[produto_id_str] = quantidade
+    quantidade_no_carrinho = cart.get(produto_id_str, 0)
 
+    if quantidade_no_carrinho + quantidade > produto.quantidade:
+        disponivel = max(produto.quantidade - quantidade_no_carrinho, 0)
+        return jsonify({
+            'erro': f'Estoque insuficiente para "{produto.nome}". Disponível: {disponivel} unidade(s).'
+        }), 400
+
+    cart[produto_id_str] = quantidade_no_carrinho + quantidade
     session['carrinho'] = cart
     session.modified = True
 
-    return '', 204
+    return jsonify({'ok': True}), 200
 
 @carrinho.route('/carrinho/remover', methods=['POST'])
 @login_required
 def remover_carrinho():
     produto_id = request.form.get('produto_id', type=int)
     quantidade = request.form.get('quantidade', type=int, default=1)
+
+    if not quantidade or quantidade < 1:
+        quantidade = 1
 
     cart = session.get('carrinho', {})
     produto_id_str = str(produto_id)

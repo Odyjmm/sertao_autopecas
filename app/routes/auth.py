@@ -10,7 +10,7 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get("email")
+        email = (request.form.get("email") or "").strip().lower()
         senha = request.form.get("senha")
 
         usuario = Usuario.query.filter_by(email=email).first()
@@ -39,22 +39,26 @@ def login():
 @auth.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        nome = request.form.get("nome")
-        email = request.form.get("email").lower().strip()
+        nome = (request.form.get("nome") or "").strip()
+        email = (request.form.get("email") or "").strip().lower()
         senha = request.form.get("senha")
-        endereco = request.form.get("endereco")
-        cidade = request.form.get("cidade")
-        estado = request.form.get("estado")
-        cep = request.form.get("cep")
+        endereco = (request.form.get("endereco") or "").strip()
+        cidade = (request.form.get("cidade") or "").strip()
+        estado = (request.form.get("estado") or "").strip().upper()
+        cep = (request.form.get("cep") or "").strip()
+        termos = request.form.get("termos")
+
+        if not all([nome, email, senha, endereco, cidade, estado, cep]):
+            return render_template('cadastro.html', erro='Preencha todos os campos!')
+
+        if not termos:
+            return render_template('cadastro.html', erro='Você precisa aceitar os Termos de Uso para se cadastrar.')
 
         if Usuario.query.filter(Usuario.email.ilike(email)).first():
             return render_template('cadastro.html', erro='Email já cadastrado!')
 
         if senha != request.form.get("confirmar_senha"):
             return render_template("cadastro.html", erro="As senhas não coincidem")
-
-        if not all([nome, email, senha, endereco, cidade, estado, cep]):
-            return render_template('cadastro.html', erro='Preencha todos os campos!')
 
         if len(senha) < 6:
             return render_template('cadastro.html', erro='A senha deve ter pelo menos 6 caracteres')

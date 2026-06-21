@@ -29,9 +29,11 @@
             <span class="navbar-user">Olá, {{ current_user.nome }}!</span>
             {% if current_user.perfil == 'CLIENTE' %}
                 <a href="/loja">Loja</a>
-                <a href="/carrinho" aria-label="Carrinho" style="position: relative; text-decoration: none; color: white;">
-                    🛒
-                    <span id="badge-carrinho"></span>
+                <a href="/carrinho" aria-label="Carrinho" style="text-decoration: none; color: white;">
+                    <span class="carrinho-icone-wrapper">
+                        🛒
+                        <span id="badge-carrinho"></span>
+                    </span>
                 </a>
                 <a href="/meus-pedidos">Meus Pedidos</a>
             {% else %}
@@ -51,6 +53,13 @@
 </nav>
 
 <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="msg-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block conteudo %}{% endblock %}
 </div>
 
@@ -58,9 +67,7 @@
     <p>© 2026 Sertão Autopeças - Peça! A Gente Entrega!</p>
 </footer>
 
-<div id="toast">
-    Adicionado com sucesso ✅
-</div>
+<div id="toast"></div>
 
 <script>
     const usuarioLogado = {{ 'true' if current_user.is_authenticated else 'false' }};

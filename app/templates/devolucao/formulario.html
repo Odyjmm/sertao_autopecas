@@ -12,6 +12,7 @@
     </div>
 
     <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
         <div class="form-group" style="margin-bottom: 20px;">
             <label><strong>Motivo da devolução:</strong></label>

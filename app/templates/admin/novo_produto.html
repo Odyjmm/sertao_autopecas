@@ -8,6 +8,7 @@
 <div style="max-width: 500px; margin: 0 auto; margin-top: 30px;">
 
     <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
         <div class="form-group" style="margin-bottom: 15px;">
             <label><strong>Nome:</strong></label>

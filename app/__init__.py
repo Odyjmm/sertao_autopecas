@@ -1,10 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+csrf = CSRFProtect()
+
 
 def create_app():
     application = Flask(__name__)
@@ -12,8 +18,15 @@ def create_app():
     application.config['UPLOAD_FOLDER'] = os.path.join('app', 'static', 'uploads')
     application.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-    application.config['SECRET_KEY'] = 'sertao-secret-key'
-    application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+    # SECRET_KEY e URI do banco agora vêm de variáveis de ambiente.
+    # Em desenvolvimento, se não houver .env, usa um valor padrão (NUNCA usar
+    # esse padrão em produção — defina SECRET_KEY no ambiente/arquivo .env).
+    application.config['SECRET_KEY'] = os.environ.get(
+        'SECRET_KEY', 'dev-only-key-troque-em-producao'
+    )
+    application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'DATABASE_URL', 'sqlite:///banco.db'
+    )
     application.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'connect_args': {'timeout': 15}
     }
@@ -22,6 +35,7 @@ def create_app():
     db.init_app(application)
     login_manager.init_app(application)
     login_manager.login_view = 'auth.login'
+    csrf.init_app(application)
 
     from app import models
 

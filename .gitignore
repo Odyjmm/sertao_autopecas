@@ -1,1 +1,13 @@
 qrcode.png
+
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+instance/
+*.db
+
+.env
+
+.idea/

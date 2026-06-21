@@ -4,14 +4,6 @@
 
 {% block conteudo %}
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-        <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endwith %}
-
 <div style="margin-top: 20px;">
     <form action="/busca" method="GET" style="display: flex; gap: 10px;">
         <input type="text" name="q" placeholder="Buscar produto..."
@@ -58,6 +50,7 @@
         {% if produto.imagem %}
             <div style="text-align: center; margin-bottom: 10px;">
                 <img src="/static/uploads/{{ produto.imagem }}"
+                     alt="{{ produto.nome }}"
                      style="max-width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
             </div>
         {% endif %}
@@ -94,6 +87,7 @@
 
             {% elif produto.quantidade > 0 %}
                 <form action="/carrinho/adicionar" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="produto_id" value="{{ produto.id }}">
 
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
@@ -121,6 +115,20 @@
     {% endfor %}
 
 </div>
+
+{% if paginacao and paginacao.pages > 1 %}
+<div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 30px;">
+    {% if paginacao.has_prev %}
+        <a href="{{ url_for('loja.loja_home', pagina=paginacao.prev_num) }}" class="btn btn-secondary">← Anterior</a>
+    {% endif %}
+
+    <span>Página {{ paginacao.page }} de {{ paginacao.pages }}</span>
+
+    {% if paginacao.has_next %}
+        <a href="{{ url_for('loja.loja_home', pagina=paginacao.next_num) }}" class="btn btn-secondary">Próxima →</a>
+    {% endif %}
+</div>
+{% endif %}
 
 <script src="{{ url_for('static', filename='js/autocomplete.js') }}" defer></script>
 

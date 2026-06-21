@@ -9,16 +9,7 @@ function alterarQtd(btn, delta) {
     }
 }
 
-function alterarQtdCarrinho(btn, delta) {
-    const input = btn.closest('div').querySelector('input[name="quantidade"]');
-    const novoValor = parseInt(input.value) + delta;
-    const min = parseInt(input.min);
-    const max = parseInt(input.max);
-
-    if (novoValor >= min && novoValor <= max) {
-        input.value = novoValor;
-    }
-}
+const alterarQtdCarrinho = alterarQtd;
 
 function confirmarRemocao(btn) {
     const input = btn.closest('form').querySelector('input[name="quantidade"]');

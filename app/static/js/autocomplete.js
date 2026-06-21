@@ -6,27 +6,48 @@ if (input) {
     input.parentElement.style.position = 'relative';
     input.parentElement.appendChild(lista);
 
-    input.addEventListener('input', async function() {
-        const termo = this.value;
-        if (termo.length < 2) { lista.innerHTML = ''; return; }
+    let debounceTimer = null;
+    let requisicaoAtual = 0;
 
-        const res = await fetch(`/busca/sugestoes?q=${termo}`);
-        const sugestoes = await res.json();
+    async function buscarSugestoes(termo) {
+        const idRequisicao = ++requisicaoAtual;
 
-        lista.innerHTML = '';
-        sugestoes.forEach(s => {
-            const li = document.createElement('li');
-            li.textContent = s.nome;
-            li.style.cssText = 'padding:8px; cursor:pointer;';
-            li.addEventListener('mouseover', () => li.style.background = '#f5f5f5');
-            li.addEventListener('mouseout', () => li.style.background = 'white');
-            li.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                window.location.href = `/produto/${s.id}`;
+        try {
+            const res = await fetch(`/busca/sugestoes?q=${encodeURIComponent(termo)}`);
+            const sugestoes = await res.json();
+
+            if (idRequisicao !== requisicaoAtual) return;
+
+            lista.innerHTML = '';
+            sugestoes.forEach(s => {
+                const li = document.createElement('li');
+                li.textContent = s.nome;
+                li.style.cssText = 'padding:8px; cursor:pointer;';
+                li.addEventListener('mouseover', () => li.style.background = '#f5f5f5');
+                li.addEventListener('mouseout', () => li.style.background = 'white');
+                li.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    window.location.href = `/produto/${s.id}`;
+                });
+                lista.appendChild(li);
             });
-            lista.appendChild(li);
-        });
+        } catch (error) {
+            console.error('Erro ao buscar sugestões:', error);
+        }
+    }
+
+    input.addEventListener('input', function() {
+        const termo = this.value.trim();
+
+        clearTimeout(debounceTimer);
+
+        if (termo.length < 2) {
+            lista.innerHTML = '';
+            return;
+        }
+
+        debounceTimer = setTimeout(() => buscarSugestoes(termo), 250);
     });
 
     document.addEventListener('click', e => {

@@ -6,14 +6,6 @@
 
 <h2 style="text-align: center;">Painel Administrativo</h2>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-        <div style="color: red; text-align: center; margin-top: 10px;">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endwith %}
-
 <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
     <a href="/admin/produto/novo" class="btn btn-primary">
         + Novo Produto
@@ -29,6 +21,7 @@
     </a>
 </div>
 
+<div class="tabela-responsiva">
 <table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
     <thead>
         <tr style="background-color: #f2f2f2;">
@@ -54,6 +47,7 @@
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
                 {% if produto.imagem %}
                     <img src="/static/uploads/{{ produto.imagem }}"
+                         alt="{{ produto.nome }}"
                          style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">
                 {% else %}
                     <span>Sem imagem</span>
@@ -73,25 +67,17 @@
             </td>
 
             <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                {% if produto.quantidade > 0 %}
-                    <span style="color: green;">
-                        {% if produto.quantidade == 0 %}
-                            <span style="color: red; font-weight: bold;">
-                                Sem estoque
-                            </span>
-                        {% elif produto.quantidade <= 5 %}
-                            <span style="color: orange; font-weight: bold;">
-                                {{ produto.quantidade }} (baixo)
-                            </span>
-                        {% else %}
-                            <span style="color: green;">
-                                {{ produto.quantidade }}
-                            </span>
-                        {% endif %}
+                {% if produto.quantidade == 0 %}
+                    <span style="color: red; font-weight: bold;">
+                        Sem estoque
+                    </span>
+                {% elif produto.quantidade <= 5 %}
+                    <span style="color: orange; font-weight: bold;">
+                        {{ produto.quantidade }} (baixo)
                     </span>
                 {% else %}
-                    <span style="color: red;">
-                        Sem estoque
+                    <span style="color: green;">
+                        {{ produto.quantidade }}
                     </span>
                 {% endif %}
             </td>
@@ -111,6 +97,7 @@
                 </a>
 
                 <form action="/admin/produto/remover" method="POST" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="produto_id" value="{{ produto.id }}">
                     <button type="submit" class="btn btn-secondary"
                             onclick="return confirm('Tem certeza que deseja remover este produto?')">
@@ -125,5 +112,6 @@
 
     </tbody>
 </table>
+</div>
 
 {% endblock %}

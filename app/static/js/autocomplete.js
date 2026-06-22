@@ -1,10 +1,23 @@
 const input = document.querySelector('input[name="q"]');
 
 if (input) {
-    const lista = document.createElement('ul');
-    lista.style.cssText = 'position:absolute; top:100%; background:white; border:1px solid #ddd; list-style:none; padding:0; margin:0; width:100%; z-index:999;';
     input.parentElement.style.position = 'relative';
-    input.parentElement.appendChild(lista);
+
+    let lista = null;
+
+    function criarLista() {
+        if (lista) return;
+        lista = document.createElement('ul');
+        lista.style.cssText = 'position:absolute; top:100%; background:white; border:1px solid #ddd; list-style:none; padding:0; margin:0; width:100%; z-index:998;';
+        input.parentElement.appendChild(lista);
+    }
+
+    function destruirLista() {
+        if (lista) {
+            lista.remove();
+            lista = null;
+        }
+    }
 
     let debounceTimer = null;
     let requisicaoAtual = 0;
@@ -18,6 +31,12 @@ if (input) {
 
             if (idRequisicao !== requisicaoAtual) return;
 
+            if (!sugestoes.length) {
+                destruirLista();
+                return;
+            }
+
+            criarLista();
             lista.innerHTML = '';
             sugestoes.forEach(s => {
                 const li = document.createElement('li');
@@ -43,7 +62,7 @@ if (input) {
         clearTimeout(debounceTimer);
 
         if (termo.length < 2) {
-            lista.innerHTML = '';
+            destruirLista();
             return;
         }
 
@@ -51,6 +70,6 @@ if (input) {
     });
 
     document.addEventListener('click', e => {
-        if (!input.contains(e.target)) lista.innerHTML = '';
+        if (!input.contains(e.target)) destruirLista();
     });
 }

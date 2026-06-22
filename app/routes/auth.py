@@ -77,7 +77,10 @@ def cadastro():
         db.session.add(novo_usuario)
         db.session.commit()
 
-        return redirect('/login')
+        login_user(novo_usuario)
+        session.pop('carrinho', None)
+
+        return redirect('/loja')
     return render_template('cadastro.html')
 
 @auth.route('/logout')
